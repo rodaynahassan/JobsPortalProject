@@ -1,0 +1,19 @@
+{
+  "name": "jobsportalproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rodaynahassan/JobsPortalProject.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rodaynahassan/JobsPortalProject/issues"
+  },
+  "homepage": "https://github.com/rodaynahassan/JobsPortalProject#readme"
+}
