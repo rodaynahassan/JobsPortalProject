@@ -21,26 +21,10 @@ router.post('/CreateANewJobSeeker', async (req, res) => {
   return res.json({ data: newJobSeeker });
 });
 
-//Update An employer
-// router.put('/updateAnemployer/:id', async (req,res) => {
-//     try {
-//      const id = req.params.id
-//      const employer = await employerController.update('id',id,req.body);
-//      if (!employer) return res.json({ msg: 'ID not there' });
-//    if (employer.error) return res.status(400).send(employer);
-//    return res.json({ msg: 'employer updated successfully', data: employer });
-//     }
-//     catch(error) {
-
-//         console.log(error)
-//     }  
-//  })
-
+//Update A Job Seeker
 router.put('/updateAnJobSeeker/:id', async (req, res) => {
     try {
-      const jobSeeker = await JobSeeker.findById(req.params.id)
-      if (!jobSeeker) return res.status(404).send({ error: 'JobSeeker does not exist' })
-      const updatedJobSeeker= await JobSeeker.findByIdAndUpdate({ _id: req.params.id },req.body)
+      const updatedJobSeeker= await jobSeekerController.update('id',req.params.id,req.body)
       res.json({ updatedJobSeeker, msg: 'JobSeeker updated successfully' })
     } catch (error) {
       console.log(error)
