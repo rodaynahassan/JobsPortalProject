@@ -21,26 +21,10 @@ router.post('/CreateANewUserApplication', async (req, res) => {
   return res.json({ data: newUserApplication });
 });
 
-//Update An job
-// router.put('/updateAnjob/:id', async (req,res) => {
-//     try {
-//      const id = req.params.id
-//      const job = await jobController.update('id',id,req.body);
-//      if (!job) return res.json({ msg: 'ID not there' });
-//    if (job.error) return res.status(400).send(job);
-//    return res.json({ msg: 'job updated successfully', data: job });
-//     }
-//     catch(error) {
-
-//         console.log(error)
-//     }  
-//  })
-
+//Update A user application
 router.put('/updateAUserApplication/:id', async (req, res) => {
     try {
-      const userApplication = await UserApplication.findById(req.params.id)
-      if (!userApplication) return res.status(404).send({ error: 'user application does not exist' })
-      const updatedUserApplication= await UserApplication.findByIdAndUpdate({ _id: req.params.id },req.body)
+      const updatedUserApplication= await userApplicationController.update('id',req.params.id,req.body)
       res.json({ updatedUserApplication, msg: 'user application updated successfully' })
     } catch (error) {
       console.log(error)

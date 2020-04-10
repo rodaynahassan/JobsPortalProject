@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
-const Application = require('../models/application');
-const applicationValidator = require('../validations/applicationValidations')
+const JobSeeker = require('../models/jobSeeker');
+const jobSeekerValidator = require('../validations/jobSeekerValidations')
 
 exports.search=async function search (att,value)
 {
     if (!att)
     {
-        var applications=await Application.find()
-        return applications
+        var jobSeekers=await JobSeeker.find()
+        return jobSeekers
     }
     if (att==='id')
     {
-        var certainApplication=await Application.findById(value)
-        return certainApplication
+        var certainJobSeeker=await JobSeeker.findById(value)
+        return certainJobSeeker
     }
     
 }
@@ -21,11 +21,11 @@ exports.create=async function create(body)
 {
     try
     {
-      const isApplicationValidated=applicationValidator.createValidation(body)
-      if (isApplicationValidated.error) return {error:isApplicationValidated.error.details[0].message}
-      const newApplication=await Application.create(body)
-      await newApplication.save();
-      return newApplication
+      const isJobSeekerValidated=jobSeekerValidator.createValidation(body)
+      if (isJobSeekerValidated.error) return {error:isjobSeekerValidated.error.details[0].message}
+      const newJobSeeker=await JobSeeker.create(body)
+      await newJobSeeker.save();
+      return newJobSeeker
 
     }
     catch (error) 
@@ -42,20 +42,20 @@ exports.update = async function update(att,value,body)
         return null
     }
     if(att==='id'){
-        var isValidated = applicationValidator.updateValidation(body)
+        var isValidated = jobSeekerValidator.updateValidation(body)
         if(isValidated.error) return {error: isValidated.error.details[0].message}
-        var updatedApplication = await Application.findByIdAndUpdate(value,body)
+        var updatedJobSeeker = await JobSeeker.findByIdAndUpdate(value,body)
         .then(res=>{return res})
         .catch(error=>{
            return {error:error}
        })
-       if (updatedApplication.error) return updatedApplication
-        var returnedApplication = await Application.findById(value)
-        return returnedApplication
+       if (updatedJobSeeker.error) return updatedJobSeeker
+        var returnedJobSeeker = await JobSeeker.findById(value)
+        return returnedJobSeeker
     }
     else{
-        const  applications = await Application.updateMany({ att: value },body)
-        return applications
+        const  jobSeekers = await JobSeeker.updateMany({ att: value },body)
+        return jobSeekers
     }
 }
     catch(error){
@@ -68,12 +68,12 @@ exports.remove = async function remove(att,value){
         return null
     }
     if(att==='id'){
-        const  application= await Application.findByIdAndDelete(value)
-        return application
+        const  jobSeeker= await JobSeeker.findByIdAndDelete(value)
+        return jobSeeker
     }
     else{
-        const  applications = await Application.deleteMany({ att: value })
-        return applications
+        const  jobSeekers = await JobSeeker.deleteMany({ att: value })
+        return jobSeekers
     }
 }
 
