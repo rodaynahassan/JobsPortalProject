@@ -4,7 +4,7 @@ const moment = require('moment');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const Job = new Schema({
-    empoyerId:{ type: ObjectId, required: true },
+    employerId:{ type: ObjectId, required: true },
     category: { type: String, required: true },
     jobType:{type: String, enum: [ 'Part Time', 'Full time', 'Internship', 'Work from home','Freelancing']},
     experienceNeeded: { type: String, required: true },

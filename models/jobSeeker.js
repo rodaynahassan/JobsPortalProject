@@ -14,7 +14,7 @@ const JobSeeker = new Schema({
     drivingLicense:{type: String, required: false},
     country:{type: String, required: true},
     city:{type: String, required: true},
-    area:{type: String, required: false},
+    address:{type: String, required: true},
     postalCode:{type: String, required: false},
     mobileNumber:{type: String, required: true},
     email: { type: String, required: true },
