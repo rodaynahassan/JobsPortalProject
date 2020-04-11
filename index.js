@@ -6,6 +6,7 @@ const jobs = require('./routes/api/jobs')
 const applications = require('./routes/api/applications')
 const userApplications = require('./routes/api/userApplications')
 const cvs = require('./routes/api/cvs')
+const careerAdvisors = require('./routes/api/careerAdvisors')
 
 const app = express()
 
@@ -28,6 +29,7 @@ app.use('/routes/api/jobs', jobs)
 app.use('/routes/api/applications', applications)
 app.use('/routes/api/userApplications', userApplications)
 app.use('/routes/api/cvs', cvs)
+app.use('/routes/api/careerAdvisors', careerAdvisors)
 
 
 app.use(function(req, res, next) {
