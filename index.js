@@ -7,6 +7,8 @@ const applications = require('./routes/api/applications')
 const userApplications = require('./routes/api/userApplications')
 const cvs = require('./routes/api/cvs')
 const careerAdvisors = require('./routes/api/careerAdvisors')
+const categories = require('./routes/api/categories')
+const countries = require('./routes/api/countries');
 
 const app = express()
 
@@ -30,7 +32,8 @@ app.use('/routes/api/applications', applications)
 app.use('/routes/api/userApplications', userApplications)
 app.use('/routes/api/cvs', cvs)
 app.use('/routes/api/careerAdvisors', careerAdvisors)
-
+app.use('/routes/api/categories', categories)
+app.use('/routes/api/countries', countries)
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -54,5 +57,5 @@ app.use((req, res) => {
   res.status(404).send({ err: 'We can not find what you are looking for' })
 })
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))

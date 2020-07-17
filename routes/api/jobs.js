@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Job = require('../../models/job');
 const jobController= require('../../controllers/jobController');
+const JobSeeker = require('../../models/jobSeeker');
+const jobSeekerController= require('../../controllers/jobSeekerController');
 
 // get all jobs
 router.get('/getAllJobs', async (req,res) => {
@@ -23,8 +25,8 @@ router.get('/getJobsOfAnEmployer/:employerId', async (req,res) => {
 });
 
 //Create New job
-router.post('/CreateANewJob', async (req, res) => {
-  const newJob = await jobController.create(req.body);
+router.post('/CreateANewJob/:employerId', async (req, res) => {
+  const newJob = await jobController.create(req.body,req.params.employerId);
   return res.json({ data: newJob });
 });
 
@@ -41,7 +43,6 @@ router.put('/updateAJob/:id', async (req, res) => {
  //Delete A job
  router.delete('/deleteAJob/:id', async (req,res) => {
     try {
-     const id = req.params.id
      const deletedJob= await jobController.remove('id', req.params.id)
      const jobs= await jobController.search()
      res.json({msg:'job was deleted successfully',jobs})
@@ -52,19 +53,154 @@ router.put('/updateAJob/:id', async (req, res) => {
     }  
  })
 
+//Save a job
+router.put('/saveAJob/:userId/:jobId', async (req, res) =>{
+  const jobSeeker = await jobSeekerController.search('id', req.params.userId);
+  jobs=jobSeeker.savedJobs
+  const job = await jobController.search('id', req.params.jobId);
+  jobs.push(job)
+  jobSeeker.savedJobs=jobs
+  await jobSeeker.save()
+  return res.json({ msg:"The job has been saved successfully"})
+});
+
+
+//Get saved jobs of a job seeker
+router.get('/getSavedJobs/:userId', async (req, res) =>{
+  const jobSeeker = await jobSeekerController.search('id', req.params.userId);
+  var savedJobs= jobSeeker.savedJobs
+  console.log(savedJobs)
+  var jobs=[]
+  for(var i=0;i<savedJobs.length;i++)
+  {
+    const job = await jobController.search('id',savedJobs[i]);
+    jobs.push(job)
+  }
+  console.log(jobs)
+ return res.json({ data:jobs})
+});
+
+//Get jobs by category and type
+router.post('/getJobsByCategoryAndType', async (req, res) =>{
+  const jobs = await jobController.search();
+  const categories= req.body.categories
+  const types=req.body.types
+  const wantedJobs=[]
+  const wantedTemp=[]
+  if(categories.length===0 && types.length===0)
+  {
+    console.log(res.data.data)
+    return res.json({ data:jobs})
+  }
+  if(categories.length===0)
+  {
+    for (var i=0;i<jobs.length;i++)
+    {
+      const type=jobs[i].jobType
+      if(types.includes(type))
+      {
+        wantedJobs.push(jobs[i])
+      }
+   }
+   return res.json({ data:wantedJobs})
+  }
+
+  if(types.length===0)
+  {
+    for (var j=0;j<jobs.length;j++)
+    {
+      const category=jobs[j].category
+      if(categories.includes(category))
+      {
+        wantedJobs.push(jobs[j])
+      }
+   }
+   return res.json({ data:wantedJobs})
+  }
+
+  for (var k=0;k<jobs.length;k++)
+  {
+    const category=jobs[k].category
+    if(categories.includes(category))
+    {
+      wantedTemp.push(jobs[k])
+    }
+  }
+  for (var l=0;l<wantedTemp.length;l++)
+  {
+    const type=wantedTemp[l].jobType
+    if(types.includes(type))
+    {
+      wantedJobs.push(wantedTemp[l])
+    }
+  }
+ return res.json({ data:wantedJobs})
+});
+
+
+//Get the number of jobs
+router.get('/getNumberOfJobs', async (req, res) =>{
+  const jobs = await jobController.search();
+  const categories= req.body.categories
+  const wantedJobs=[]
+  if(categories.length===0)
+  {
+    return res.json({ data:jobs.length})
+  }
+  for (var i=0;i<jobs.length;i++)
+  {
+    const category=jobs[i].category
+    if(categories.includes(category))
+    {
+      wantedJobs.push(jobs[i])
+    }
+  }
+ return res.json({ data:wantedJobs.length})
+});
+
+
  //Viewing the applications of a certian employee
- router.get('/getEmployeeAppliedJobs/:id', async (req, res) =>{
-  const job = await jobController.search('id', req.params.id);
-  return res.json({ data: job })
+ router.get('/getEmployeeAppliedJobs/:userId', async (req, res) =>{
+  const jobs = await jobController.search();
+  var appliedJobs=[]
+  var status=[]
+  for(var i=0;i<jobs.length;i++)
+  {
+    var appliedApplicants=jobs[i].appliedApplicants;
+    if(appliedApplicants.includes(req.params.userId))
+    {
+      appliedJobs.push(jobs[i])
+    }
+  }
+
+  for(var j=0;j<appliedJobs.length;j++)
+  {
+    var viewedApplicants=appliedJobs[j].viewedApplicants;
+    var acceptedApplicants=appliedJobs[j].acceptedApplicants;
+    var rejectedApplicants=appliedJobs[j].rejectedApplicants;
+    if(rejectedApplicants.includes(req.params.userId))
+      status.push("Rejected")
+      else if (acceptedApplicants.includes(req.params.userId))
+      {
+        status.push("Accepted")
+      }
+      else if (viewedApplicants.includes(req.params.userId))
+      {
+        status.push("Viewed")
+      }
+      else 
+      {
+        status.push("Applied")
+      }
+  }
+  return res.json({ appliedJobs: appliedJobs, status:status })
 });
 
  //Employee apply to a job
-router.put('/applyToAJob/:jobId/:userId',async (req, res) => {
+router.put('/applyToAJob/:userId/:jobId',async (req, res) => {
       const jobId = req.params.jobId;
       const userId = req.params.userId;
       var job = await jobController.search("id", jobId);
-      //if (job.error) return res.status(400).json({ error: job.error });
-      //job = job[0].toJSON();
       var totalNumberOfApplicants=  job.totalNumberOfApplicants +1;
       job.totalNumberOfApplicants = totalNumberOfApplicants;
       var appliedApplicants= job.appliedApplicants;

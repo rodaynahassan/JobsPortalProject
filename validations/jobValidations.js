@@ -3,10 +3,10 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = { 
-            employerId: Joi.string().required(),
+            employerId: Joi.string(),
             category: Joi.string().required(),
             jobType: Joi.string().required(),
-            experienceNeeded: Joi.string().required(),
+            experienceNeeded: Joi.string(),
             careerLevel: Joi.string().required(),
             jobTitle: Joi.string().required(),
             salary:Joi.string().max(50).required(),
@@ -14,8 +14,8 @@ module.exports = {
             vacancies: Joi.string().required(),
             jobDescription: Joi.string().required(),
             jobRequirements: Joi.string(),
-            country: Joi.string(),
-            city: Joi.string(),
+            country: Joi.string().required(),
+            city: Joi.string().required(),
             totalNumberOfApplicants: Joi.number(),
             appliedApplicants:Joi.array(),
             numberOfViewedApplications:Joi.number(),
@@ -24,9 +24,10 @@ module.exports = {
             acceptedApplicants:Joi.array(),
             numberOfRejectedApplications:Joi.number(),
             rejectedApplicants:Joi.array(),
-            startDate:Joi.date(),
+            startDate:Joi.string(),
             duration:Joi.string(),
-            applicationDeadline:Joi.string()
+            applicationDeadline:Joi.string(),
+            dataPosted:Joi.string()
             }
 
         return Joi.validate(request, createSchema)
@@ -55,8 +56,8 @@ module.exports = {
             acceptedApplicants:Joi.array(),
             numberOfRejectedApplications:Joi.string(),
             rejectedApplicants:Joi.array(),
-            startDate:Joi.date(),
-            duration:Joi.String(),
+            startDate:Joi.string(),
+            duration:Joi.string(),
             applicationDeadline:Joi.string()
             }
 

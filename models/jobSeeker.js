@@ -18,7 +18,8 @@ const JobSeeker = new Schema({
     postalCode:{type: String, required: false},
     mobileNumber:{type: String, required: true},
     email: { type: String, required: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    savedJobs:{type: Array, required:false}
 });
 
 module.exports = jobSeeker = mongoose.model('jobSeekers', JobSeeker);

@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const Application = require('../../models/application');
 const applicationController= require('../../controllers/applicationController');
+const Job = require('../../models/job');
+const jobController= require('../../controllers/jobController');
 
 // get all applications
 router.get('/getAllApplications', async (req,res) => {
@@ -13,11 +15,34 @@ router.get('/getAllApplications', async (req,res) => {
 router.get('/getByID/:id', async (req, res) =>{
     const application = await applicationController.search('id', req.params.id);
     return res.json({ data: application })
-}); 
+});
+
+// get job details by applicationID
+// router.get('/getJobDetails/:applicationId', async (req, res) =>{
+//   const application = await applicationController.search('id', req.params.applicationId);
+//   const jobId= application.jobId;
+//   const job = await jobController.search('id', jobId);
+//   return res.json({ 
+//     jobTitle: job.jobTitle,
+//     category:job.category,
+//     companyName: job.companyName,
+//     city: job.city,
+//     country:job.country,
+//     jobType:job.jobType,
+//     careerLevel:job.careerLevel,
+//     languages: job.languages,
+//     datePosted: job.datePosted});
+// });
+
+// get a certain application by jobID
+router.get('/getByjobID/:jobId', async (req, res) =>{
+  const application = await applicationController.search('jobId', req.params.jobId);
+  return res.json({ data: application })
+});
 
 //Create New application
-router.post('/CreateANewApplication', async (req, res) => {
-	const newApplication = await applicationController.create(req.body);
+router.post('/CreateANewApplication/:employerId/:jobId', async (req, res) => {
+	const newApplication = await applicationController.create(req.body,req.params.employerId,req.params.jobId);
 	return res.json({ data: newApplication });
 });
 

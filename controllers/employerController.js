@@ -21,7 +21,7 @@ exports.create=async function create(body)
 {
     try
     {
-      const isEmployerValidated=EmployerValidator.createValidation(body)
+      const isEmployerValidated=employerValidator.createValidation(body)
       if (isEmployerValidated.error) return {error:isEmployerValidated.error.details[0].message}
       const newEmployer=await Employer.create(body)
       await newEmployer.save();

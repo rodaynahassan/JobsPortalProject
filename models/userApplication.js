@@ -4,8 +4,8 @@ const moment = require('moment');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const UserApplication = new Schema({
-    userID:{ type: ObjectId, required: true },
-    applicationID: { type: ObjectId, required: true },
+    userId:{ type: ObjectId},
+    applicationId: { type: ObjectId},
     answerOne:{type: String, required: false},
     answerTwo: { type: String, required: false },
     answerThree: { type: String, required: false },
@@ -15,7 +15,8 @@ const UserApplication = new Schema({
     answerSeven:{type: String, required: false},
     answerEight:{type: String, required: false},
     answerNine:{type: String, required: false},
-    answerTen:{type: String, required: false}
+    answerTen:{type: String, required: false},
+    status:{type:String,enum: [ 'Applied', 'Viewed', 'Accepted', 'Rejected'],required:false}
 });
 
 module.exports = userApplication = mongoose.model('userApplications', UserApplication);
