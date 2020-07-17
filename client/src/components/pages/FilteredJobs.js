@@ -118,6 +118,8 @@ redirectSave(jobId) {
   var apiBaseUrl = '/routes/api/jobs/saveAJob/5e7d35d36626c516005f62a1/'+jobId
   axios.put(apiBaseUrl)
         .then(function(response) {
+          if(response.data.msg!=="You have already saved this job before. You can view it in the 'Saved jobs' page.")
+          {
             swal({
                 title: "You have saved the job successfully!",
                 icon: "success",
@@ -145,7 +147,36 @@ redirectSave(jobId) {
                     document.location.href = '/';
                 }
               });
-                     
+            }
+            else
+            {
+              swal({
+                title: "You have already saved this job before. You can view it in the 'Saved jobs' page.",
+                buttons: {
+                    catch: {
+                        text: "Show saved jobs",
+                        value: "saved",
+                      },
+                      defeat: {
+                        text: "Homepage",
+                        value: "home",
+                      },  
+                }
+              })
+              .then((value) => {
+                switch (value) {
+            
+                  case "saved":
+                    document.location.href = '/savedjobs';
+                    break;
+                  case "home":
+                     document.location.href = '/';
+                     break;  
+                  default:
+                    document.location.href = '/';
+                }
+              });
+            }       
             })
 }
 componentDidMount()

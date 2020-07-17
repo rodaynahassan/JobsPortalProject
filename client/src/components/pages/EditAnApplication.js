@@ -62,7 +62,7 @@ class EditAnApplication extends Component
 componentDidMount()
     {
         // axios.get('/routes/api/appplications/getByjobID/'+localStorage.getItem('jobId'))
-        axios.get('/routes/api/userApplications/getApplication/5f0cd8ba15ca6e6e2095b9e7')
+        axios.get('/routes/api/userApplications/getApplication/'+localStorage.getItem('userApplicationId'))
                 .then((response) => {
                     console.log(response.data.userApplication)
                     console.log(response.data.application)
@@ -133,7 +133,7 @@ validateForm() {
         }
         if(this.state.maxOne!==undefined)
         {
-            One=One && this.state.answerOne.length<=parseInt(this.state.minOne)
+            One=One && this.state.answerOne.length<=parseInt(this.state.maxOne)
         }
     }
 
@@ -150,7 +150,7 @@ validateForm() {
         }
         if(this.state.maxTwo!==undefined)
         {
-            Two=Two && this.state.answerOne.length<=parseInt(this.state.minTwo)
+            Two=Two && this.state.answerTwo.length<=parseInt(this.state.maxTwo)
         }
     }
 
@@ -620,12 +620,12 @@ handleClick(error) {
             width:"60%",
             height:"5000hv",
             backgroundColor:'rgba(0,0,0.5,0.02)',
-            marginLeft:"300px"
+            marginLeft:"400px"
             }}
         >
           <Card.Body>
             <div>
-                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"190px"}}>
+                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"240px",border: "2px solid black"}}>
                 &nbsp;Please fill in this application&nbsp;
                 </span>
             <br/>
@@ -647,7 +647,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerTwo" onChange={this.changeHandler} value={this.state.answerTwo}class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.questionTwo}<span style={{color:"red", fontFamily:"monospace",fontSize:"1em",backgroundColor:'rgba(0,0,0.5,0.01)'}}>&nbsp;*</span>
+            {this.state.minTwo!==undefined && this.state.maxTwo!==undefined ? MinMaxTwo: this.state.minTwo!==undefined ? MinTwo:this.state.maxTwo!==undefined?MaxTwo:null}
 
             <div >
              <Button
@@ -677,12 +677,12 @@ handleClick(error) {
             width:"60%",
             height:"5000hv",
             backgroundColor:'rgba(0,0,0.5,0.02)',
-            marginLeft:"300px"
+            marginLeft:"400px"
             }}
         >
           <Card.Body>
             <div>
-                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"190px"}}>
+                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"240px",border: "2px solid black"}}>
                 &nbsp;Please fill in this application&nbsp;
                 </span>
             <br/>
@@ -743,12 +743,12 @@ handleClick(error) {
             width:"60%",
             height:"5000hv",
             backgroundColor:'rgba(0,0,0.5,0.02)',
-            marginLeft:"300px"
+            marginLeft:"400px"
             }}
         >
           <Card.Body>
             <div>
-                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"190px"}}>
+                <span style={{color:"white", fontStyle:"italic",fontSize:"1.5em", fontFamily:"Arial",fontWeight:"bold",backgroundColor:"#333FFF",marginLeft:"240px",border: "2px solid black"}}>
                 &nbsp;Please fill in this application&nbsp;
                 </span>
             <br/>

@@ -30,7 +30,8 @@ class SavedJobs extends Component
         super(props);
         this.state={
             jobs:[],
-            modalShow: false
+            modalShow: false,
+            flag:false
         };
 }
 
@@ -40,24 +41,68 @@ redirectGet(jobId) {
   document.location.href = '/jobdetails';
 }
 
-redirectApply(jobId) {
-    localStorage.setItem('jobId', jobId);
-    console.log(jobId)
-    document.location.href = '/application';
-}
+redirectUnsave(jobId) {
+    // localStorage.setItem('jobId', jobId);
+    // console.log(jobId)
+    // axios.get('/routes/api/jobSeekers/getByID/5e7d35d36626c516005f62a1')
+    //             .then((response) => {
+    //                 console.log("Hi")
+    //                 console.log(response.data.data)
+    //                 this.setState({jobs:response.data.data.savedJobs});
+    //                 // this.setState({jobs:response.data.data[0]});
+
+    //             });
+    // document.location.href = '/application';
+var apiBaseUrl = '/routes/api/jobs/unsaveAJob/5e7d35d36626c516005f62a1/'+jobId;
+
+// axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('jwtToken');
+axios
+.put(apiBaseUrl)
+.then(function(response) {
+          swal("You have unsaved the job.")
+          setTimeout("document.location.href = '/savedjobs';",1500);
+        });
+
+      }
 componentDidMount()
     {
         axios.get('/routes/api/jobSeekers/getByID/5e7d35d36626c516005f62a1')
                 .then((response) => {
-                    console.log("Hi")
-                    console.log(response.data.data)
                     this.setState({jobs:response.data.data.savedJobs});
+                    if(response.data.data.savedJobs.length===0){
+                      this.setState({flag:true})
+                  }   
                     // this.setState({jobs:response.data.data[0]});
 
                 });
   }
   
-
+  noJobs=()=>
+  {
+    swal({
+      title: "You don't have any saved jobs",
+      icon: "error",
+      buttons: {
+         
+            defeat:
+            {
+              text: "Browse jobs",
+              value: "home",
+            }
+      }
+    })
+    .then((value) => {
+      switch (value) {
+  
+       
+           case "home":
+            document.location.href = '/jobs';
+            break;  
+        default:
+          document.location.href = '/jobs';
+      }
+    })  
+  }
 getAttributes = () => {
     let modalClose = () => this.setState({ modalShow: false });
     return this.state.jobs.map((Job, index) => {
@@ -283,11 +328,11 @@ getAttributes = () => {
               </Button> 
 
 			 <Button  
-				title="Click to apply to the job"
-				onClick={() => this.redirectApply(Job._id)}
+				title="Click to unsave to the job"
+				onClick={() => this.redirectUnsave(Job._id)}
 				style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.9em",marginLeft:"470px",marginTop:"-77px"}}  
 				>
-            Apply
+            Unsave
             </Button>               
             </div>
           </Card.Body>
@@ -298,12 +343,43 @@ getAttributes = () => {
     })};
 
   render() {
+  //  var noJobs=(
+  //     swal({
+  //       title: "You don't have any saved jobs",
+  //       icon: "error",
+  //       buttons: {
+  //           catch: {
+  //               text: "OK",
+  //               value: "saved",
+  //             },
+  //             defeat:
+  //             {
+  //               text: "Browse jobs",
+  //               value: "home",
+  //             }
+  //       }
+  //     })
+  //     .then((value) => {
+  //       switch (value) {
+    
+  //         case "saved":
+  //            document.location.href = '/savedjobs';
+  //            break;  
+  //            case "home":
+  //             document.location.href = '/jobs';
+  //             break;  
+  //         default:
+  //           document.location.href = '/savedjobs';
+  //       }
+  //     })
+    
+  //   );
     return (
         
       <div>
         <div>
         </div>
-        {this.getAttributes()} 
+        {this.state.flag===false? this.getAttributes():this.noJobs() } 
       </div>
     );
   }

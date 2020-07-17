@@ -4,6 +4,8 @@ const Job = require('../../models/job');
 const jobController= require('../../controllers/jobController');
 const JobSeeker = require('../../models/jobSeeker');
 const jobSeekerController= require('../../controllers/jobSeekerController');
+const mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // get all jobs
 router.get('/getAllJobs', async (req,res) => {
@@ -58,10 +60,56 @@ router.put('/saveAJob/:userId/:jobId', async (req, res) =>{
   const jobSeeker = await jobSeekerController.search('id', req.params.userId);
   jobs=jobSeeker.savedJobs
   const job = await jobController.search('id', req.params.jobId);
+  var flag=false
+  for(var i=0;i<jobs.length;i++)
+  {
+
+    // var temp=ObjectId(jobs[i]._id).toString()
+    var temp =""+jobs[i]._id
+    console.log(temp)
+    console.log(req.params.jobId)
+    if(temp===req.params.jobId)
+    {
+      flag=true
+
+    }
+  }
+  if(flag===true)
+  {
+    return res.json({ msg:"You have already saved this job before. You can view it in the 'Saved jobs' page."})
+  }
+  else
+  {
   jobs.push(job)
   jobSeeker.savedJobs=jobs
   await jobSeeker.save()
   return res.json({ msg:"The job has been saved successfully"})
+  }
+});
+
+//unSave a job
+router.put('/unsaveAJob/:userId/:jobId', async (req, res) =>{
+  const jobSeeker = await jobSeekerController.search('id', req.params.userId);
+  jobs=jobSeeker.savedJobs
+  var flag=false
+  for(var i=0;i<jobs.length;i++)
+  {
+
+    // var temp=ObjectId(jobs[i]._id).toString()
+    var temp =""+jobs[i]._id
+    console.log(temp)
+    console.log(req.params.jobId)
+    if(temp===req.params.jobId)
+    {
+      jobs.splice(i,1)
+
+    }
+  }
+  
+  jobSeeker.savedJobs=jobs
+  await jobSeeker.save()
+  return res.json({ msg:"The job has been saved successfully"})
+  
 });
 
 
@@ -196,6 +244,7 @@ router.get('/getNumberOfJobs', async (req, res) =>{
   return res.json({ appliedJobs: appliedJobs, status:status })
 });
 
+
  //Employee apply to a job
 router.put('/applyToAJob/:userId/:jobId',async (req, res) => {
       const jobId = req.params.jobId;
@@ -212,6 +261,26 @@ router.put('/applyToAJob/:userId/:jobId',async (req, res) => {
         data: job
       });
   }
+);
+
+//Employee apply to a job
+router.get('/checkApplied/:userId/:jobId',async (req, res) => {
+  const jobId = req.params.jobId;
+  const userId = req.params.userId;
+  var job = await jobController.search("id", jobId);
+  var appliedApplicants= job.appliedApplicants;
+  if(appliedApplicants.includes(userId))
+  {
+    return res.json({
+      msg: "You've already applied to this job. You can view, edit and track your application in the 'Applications' page.",
+    });
+  }
+  else{
+  return res.json({
+    msg: "To apply for this job, you have to fill an application first."
+  });
+}
+}
 );
 
 router.put('/viewAnApplication/:jobId/:userId',async (req, res) => {

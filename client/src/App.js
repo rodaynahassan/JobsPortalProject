@@ -163,7 +163,7 @@ class App extends Component {
             </Switch>
             </div>
                  {/* {currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv' || currentLocation==='/cv' ?<SideBar />:null } */}
-                  {currentLocation==='/'?null:currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv' ?<SideBar /> :null}    
+                  {currentLocation==='/'?null:currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv'||currentLocation==='/cv' ?<SideBar /> :null}    
                   {/* <NewNavBar/> */}
                   {currentLocation==='/'||currentLocation==='/user'?null:<NewNavBar/>}
 

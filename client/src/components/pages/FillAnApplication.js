@@ -65,7 +65,8 @@ componentDidMount()
                 .then((response) => {
                     console.log(response.data.data[0]._id)
                     this.setState({
-                      application:response.data.data[0]._id,
+                    applicationId:response.data.data[0]._id,
+                      application:response.data.data[0],
                       jobId: response.data.data[0].jobId,
                       applicationType:response.data.data[0].applicationType,
                       questionOne:response.data.data[0].questionOne,
@@ -285,30 +286,58 @@ validateForm() {
 }
 
 handleClick(error) { 
+    axios.get('/routes/api/jobs/checkApplied/5e7d35d36626c516005f62a1/'+this.state.jobId)
+                .then((response) => {
+                   console.log(response.data.msg)
+                    });
         error.preventDefault();
     console.log(this.state.application)
-        const keys = this.state.application['0'];
+        // const keys = this.state.application['0'];
+        const keys = Object.getOwnPropertyNames(this.state.application)
 		console.log(keys)
-		var KEYS = [];
-		for (var key in keys) {
-            if(key !== '_id' && key !== '__v' && key !== 'applicationType' && key !== 'jobId' && key !== 'employerId')
-			KEYS.push(key);
-		}
+        var KEYS = [];
+        for(var i=0;i<keys.length;i++)
+        {
+            if(keys[i] !== '_id' && keys[i] !== '__v' && keys[i] !== 'applicationType' && keys[i] !== 'jobId' && keys[i] !== 'employerId'
+            &&keys[i] !== 'minOne'
+            &&keys[i] !== 'minTwo'
+            &&keys[i] !== 'minThree'
+            &&keys[i] !== 'minFour'
+            &&keys[i] !== 'minFive'
+            &&keys[i] !== 'minSix'
+            &&keys[i] !== 'minSeven'
+            &&keys[i] !== 'minEight'
+            &&keys[i] !== 'minNine'
+            &&keys[i] !== 'minTen'
+            &&keys[i] !== 'maxOne'
+            &&keys[i] !== 'maxTwo'
+            &&keys[i] !== 'maxThree'
+            &&keys[i] !== 'maxFour'
+            &&keys[i] !== 'maxFive'
+            &&keys[i] !== 'maxSix'
+            &&keys[i] !== 'maxSeven'
+            &&keys[i] !== 'maxEight'
+            &&keys[i] !== 'maxNine'
+            &&keys[i] !== 'maxTen'
+            )
+            KEYS.push(keys[i])
+        }
        
+       console.log(KEYS)
         var answers=[]
         for(var j=0;j<KEYS.length;j++)
         {
             var temp= "answer"+KEYS[j].substring(8)
             answers.push(temp)
         }
-        
+        console.log(answers)
         var payload = {};
         answers.map((answer, index) => {
             payload[answer] = this.state[answer];
         });
         
     console.log(this.state.application)
-    var apiBaseUrl = '/routes/api/userApplications/CreateANewUserApplication/5e7d35d36626c516005f62a1/'+this.state.application;
+    var apiBaseUrl = '/routes/api/userApplications/CreateANewUserApplication/5e7d35d36626c516005f62a1/'+this.state.applicationId;
     
     axios.post(apiBaseUrl, payload)
         .then(function(response) {

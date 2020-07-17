@@ -87,13 +87,26 @@ componentDidMount()
 redirectApply(jobId) {
   localStorage.setItem('jobId', jobId);
   console.log(jobId)
-  document.location.href = '/application';
+  axios.get('/routes/api/jobs/checkApplied/5e7d35d36626c516005f62a1/'+localStorage.getItem('jobId'))
+                .then((response) => {
+                   console.log(response.msg)
+                   if(response.data.msg==="You've already applied to this job. You can view, edit and track your application in the 'Applications' page.")
+                   {
+                    return swal("You've already applied to this job. You can view, edit and track your application in the 'Applications' page.")
+                   }
+                   else
+                   {
+                    document.location.href = '/application';
+                   }
+                    });
 }
 
 redirectSave(jobId) {
   var apiBaseUrl = '/routes/api/jobs/saveAJob/5e7d35d36626c516005f62a1/'+jobId
   axios.put(apiBaseUrl)
         .then(function(response) {
+          if(response.data.msg!=="You have already saved this job before. You can view it in the 'Saved jobs' page.")
+          {
             swal({
                 title: "You have saved the job successfully!",
                 icon: "success",
@@ -121,7 +134,36 @@ redirectSave(jobId) {
                     document.location.href = '/';
                 }
               });
-                     
+            }
+            else
+            {
+              swal({
+                title: "You have already saved this job before. You can view it in the 'Saved jobs' page.",
+                buttons: {
+                    catch: {
+                        text: "Show saved jobs",
+                        value: "saved",
+                      },
+                      defeat: {
+                        text: "Homepage",
+                        value: "home",
+                      },  
+                }
+              })
+              .then((value) => {
+                switch (value) {
+            
+                  case "saved":
+                    document.location.href = '/savedjobs';
+                    break;
+                  case "home":
+                     document.location.href = '/';
+                     break;  
+                  default:
+                    document.location.href = '/';
+                }
+              });
+            } 
             })
 }
 
