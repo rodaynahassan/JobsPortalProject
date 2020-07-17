@@ -15,15 +15,33 @@ exports.search=async function search (att,value)
         var certainApplication=await Application.findById(value)
         return certainApplication
     }
+
+    if(att ==='jobId')
+    {
+    return await Application.find({jobId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
     
 }
 
-exports.create=async function create(body)
+exports.create=async function create(body,employerId,jobId)
 {
     try
     {
       const isApplicationValidated=applicationValidator.createValidation(body)
       if (isApplicationValidated.error) return {error:isApplicationValidated.error.details[0].message}
+      body.jobId=jobId
+      body.employerId=employerId
+      if(body.applicationType==='Default'||body.applicationType==='Mixed')
+      {
+          body.questionOne="What do you think you will gain from this job ?";
+          body.questionTwo="What makes you special to be accepted ?";
+      }
       const newApplication=await Application.create(body)
       await newApplication.save();
       return newApplication
