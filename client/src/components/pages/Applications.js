@@ -34,7 +34,16 @@ redirectEdit(userApplicationId) {
 }
 componentDidMount()
     {
-        axios.get('/routes/api/jobs/getEmployeeAppliedJobs/5e7d35d36626c516005f62a1')
+       
+        axios.get('/routes/api/userApplications/getByuserID/5e7d35d36626c516005f62a1')
+                .then((response) => {
+                    console.log(response.data.data)
+                    this.setState({
+                      userApplications:response.data.data,
+                    });  
+                });  
+                
+                axios.get('/routes/api/jobs/getEmployeeAppliedJobs/5e7d35d36626c516005f62a1')
                 .then((response) => {
                     console.log(response.data.status)
                     this.setState({
@@ -43,13 +52,6 @@ componentDidMount()
                     });  
                 });
 
-        axios.get('/routes/api/userApplications/getByuserID/5e7d35d36626c516005f62a1')
-                .then((response) => {
-                    console.log(response.data.data)
-                    this.setState({
-                      userApplications:response.data.data,
-                    });  
-                });         
 
   }
   
@@ -85,7 +87,7 @@ getAttributes = () => {
   );
     let modalClose = () => this.setState({ modalShow: false });
     return this.state.appliedJobs.map((Job, index) => {
-      // console.log(this.state.userApplications[index]._id)
+      console.log(this.state.userApplications[index]._id)
       var languages=Job.languages
       var languagesS=""
       for(var j=0;j<languages.length;j++){

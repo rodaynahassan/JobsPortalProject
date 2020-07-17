@@ -63,7 +63,7 @@ class SideBar extends Component {
                 <SideNav.Nav>
                     <NavItem eventKey="personalInfo" title="Personal Info">
                         <NavIcon>
-                            <a href="/">
+                            <a href="/personalinfo">
                             <i className="fa fa-info-circle" style={{ fontSize: '1.75em',color:"#3C54F5"}} > </i>
                             </a>
                         </NavIcon>

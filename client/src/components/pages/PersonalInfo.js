@@ -92,7 +92,9 @@ validateForm() {
         this.state.maritalStatus!=='Please choose a status' &&
         this.state.militaryStatus!=='Please choose a status' &&
         this.state.country!==undefined &&
+        this.state.country!=='Please choose the country' &&
         this.state.city!==undefined &&
+        this.state.city!=='Please choose the city' &&
         this.state.address!==undefined &&
         this.state.drivingLicense!==undefined &&
         this.state.mobileNumber!==undefined
@@ -115,6 +117,8 @@ validateForm() {
             }); 
         
     }
+
+   
     
     // 
     
