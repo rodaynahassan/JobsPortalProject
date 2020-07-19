@@ -18,6 +18,7 @@ import ChangeEmail from './components/pages/ChangeEmail.js'
 import ChangePassword from './components/pages/ChangePassword.js'
 import EditCV from './components/pages/EditCV.js'
 import CV from './components/pages/CV.js'
+import CreateANewJob from './components/pages/CreateANewJob.js'
 
 // import add from './components/pages/EditCV.js'
 
@@ -81,7 +82,7 @@ class App extends Component {
                 <Route
                   exact
                   path="/"
-                  render={props => <Homepage {...props} />}
+                  render={props => <CreateANewJob {...props} />}
                 />
 
                 <Route

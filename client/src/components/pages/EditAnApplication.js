@@ -350,10 +350,10 @@ handleClick(error) {
                     document.location.href = '/applications';
                     break;
                   case "home":
-                     document.location.href = '/';
+                     document.location.href = '/jobs';
                      break;  
                   default:
-                    document.location.href = '/';
+                    document.location.href = '/jobs';
                 }
               });
                      

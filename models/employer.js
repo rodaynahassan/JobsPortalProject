@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 const moment = require('moment');
 
 const Employer = new Schema({
+    userType:{type:String, default:'employer',required:false},
     firstName: { type: String, required: true },
     middleName: { type: String, required: false },
     lastName: { type: String, required: true },

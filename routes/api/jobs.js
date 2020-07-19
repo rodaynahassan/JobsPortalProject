@@ -94,8 +94,6 @@ router.put('/unsaveAJob/:userId/:jobId', async (req, res) =>{
   var flag=false
   for(var i=0;i<jobs.length;i++)
   {
-
-    // var temp=ObjectId(jobs[i]._id).toString()
     var temp =""+jobs[i]._id
     console.log(temp)
     console.log(req.params.jobId)
