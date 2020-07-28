@@ -12,7 +12,7 @@ const Job = new Schema({
     careerLevel: { type: String, required: true,enum: [ 'Student', 'Fresh graduate', 'Experienced', 'Executive/Supervisor','Senior Manager'] },
     jobTitle: { type: String, required: true },
     salary: { type: String, required: true },
-    languages:{ type: Array, required: true },
+    languages:{ type: String, required: true },
     vacancies:{type: String, required: true},
     jobDescription:{type: String, required: true},
     jobRequirements:{type: String, required: false},

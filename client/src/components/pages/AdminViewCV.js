@@ -21,7 +21,7 @@ import { blue200 } from "material-ui/styles/colors";
 
 var mongoose = require("mongoose");
 
-class CV extends Component {
+class AdminViewCv extends Component {
   state = {
     firstName:'',
     lastName:'',
@@ -45,7 +45,7 @@ class CV extends Component {
     // axios.defaults.headers.common["Authorization"] =
     //   "Bearer " + localStorage.getItem("jwtToken");
     axios
-			.get('/routes/api/cvs/getByJobSeekerId/5e7d35d36626c516005f62a1')
+			.get('/routes/api/cvs/getByJobSeekerId/'+localStorage.getItem('userId'))
 			.then((response) => {
                 console.log(response.data.data[0].birthdate.substring(0,10))
 				this.setState({
@@ -77,6 +77,7 @@ class CV extends Component {
     doc.fromHTML(document.getElementById("divToPrint").innerHTML);
     doc.save('CV.pdf');
    }
+
 
   getAttributes = () => {
       var languages=
@@ -246,7 +247,7 @@ class CV extends Component {
 <div>
         
 
-        <Button
+<Button
           label="Save as PDF"
           variant="omar"
           size="sm"
@@ -270,8 +271,7 @@ class CV extends Component {
               </i>
           
         </Button>
-        
-        <div>
+
           <div style={{ paddingLeft: "44%" }} />
           <div
             id="divToPrint"
@@ -287,8 +287,6 @@ class CV extends Component {
 
             {this.getAttributes()}
           </div>
-          </div>
-        
           <Button
           label="Save as PDF"
           variant="omar"
@@ -313,10 +311,11 @@ class CV extends Component {
               </i>
           
         </Button>
+
           </div>
 
     );
   }
 }
 
-export default CV;
+export default AdminViewCv;

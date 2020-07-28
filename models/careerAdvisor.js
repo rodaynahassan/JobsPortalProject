@@ -8,24 +8,24 @@ const CareerAdvisor = new Schema({
     lastName: { type: String, required: true },
     gender: { type: String, required: true },
     birthdate: { type: Date, required: true },
-    mobileNumber:{type: String, required: false},
+    mobileNumber:{type: String, required: true},
     mobileNumberVisibility:{type: String, enum: ['Private','Public'], required: true},
     email: { type: String, required: true },
     password: { type: String, required: true },
     country:{type: String, required: true},
-    city: {type: String, required: false},
-    yearsOfExperience: {type: Number, required: true},
+    city: {type: String, required: true},
+    yearsOfExperience: {type: String, required: true},
     previousExperience: {type: String, required: true},
     fieldOfAdvising: {type: String, required: true},
-    achievements: {type: String, required: false},
     school:{type: String, required: true},
-    degree:{type: String, required: true},
     fieldOfStudy:{type: String, required: true},
     startYear:{type: String, required: true},
     endYear:{type: String, required: true},
-    grade:{type: String, required: false},
+    grade:{type: String, required: true},
     activities:{type: String, required: false},
-    extraInfo:{type: String, required: false}
+    extraInfo:{type: String, required: false},
+    achievements: {type: String, required: false},
+
 });
 
 module.exports = careerAdvisor = mongoose.model('careerAdvisors', CareerAdvisor);

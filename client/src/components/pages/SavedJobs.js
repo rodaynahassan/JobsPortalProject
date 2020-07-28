@@ -110,12 +110,12 @@ getAttributes = () => {
       // this.setState({datePosted:Job.datePosted.substring(0,10)})
       // // const date=this.state.datePosted.substring(0,10)
       // console.log(this.state.datePosted)
-      console.log(Job.languages[0])
-      var languages=Job.languages
-      var languagesS=""
-      for(var j=0;j<languages.length;j++){
-        languagesS=languagesS+","+ languages[j]
-      }
+      // console.log(Job.languages[0])
+      // var languages=Job.languages
+      // var languagesS=""
+      // for(var j=0;j<languages.length;j++){
+      //   languagesS=languagesS+","+ languages[j]
+      // }
       var it=
       (
        <div>
@@ -311,7 +311,7 @@ getAttributes = () => {
             <br/>
             <h7 
               style={{color:"black", fontStyle:"monospace",fontSize:"1em"}}>
-                 Languages needed:&nbsp; {languagesS.substring(1)}.
+                 Languages needed:&nbsp; {Job.languages}.
             </h7> 
             <br/>
             <br/>

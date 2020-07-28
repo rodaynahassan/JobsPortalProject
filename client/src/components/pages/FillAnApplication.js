@@ -60,10 +60,11 @@ class FillAnApplication extends Component
 
 componentDidMount()
     {
+       console.log(localStorage.getItem('jobId'))
         // axios.get('/routes/api/appplications/getByjobID/'+localStorage.getItem('jobId'))
         axios.get('/routes/api/applications/getByjobID/'+localStorage.getItem('jobId'))
                 .then((response) => {
-                    console.log(response.data.data[0]._id)
+                    console.log(response.data.data)
                     this.setState({
                     applicationId:response.data.data[0]._id,
                       application:response.data.data[0],
@@ -111,7 +112,7 @@ validateForm() {
     var One=true;
     if(this.state.questionOne!==undefined)
     {
-        if(this.state.minOne!==undefined)
+        if(this.state.minOne!==undefined && this.state.minOne!=="0" )
         {
             One=One && this.state.answerOne.length>=parseInt(this.state.minOne)
         }
@@ -119,7 +120,7 @@ validateForm() {
         {
             One=One && this.state.answerOne.length>=1 
         }
-        if(this.state.maxOne!==undefined)
+        if(this.state.maxOne!==undefined && this.state.maxOne!=="0")
         {
             One=One && this.state.answerOne.length<=parseInt(this.state.maxOne)
         }
@@ -128,7 +129,7 @@ validateForm() {
     var Two=true;
     if(this.state.questionTwo!==undefined)
     {
-        if(this.state.minTwo!==undefined)
+        if(this.state.minTwo!==undefined && this.state.minTwo!=="0")
         {
             Two=Two && this.state.answerTwo.length>=parseInt(this.state.minTwo)
         }
@@ -136,7 +137,7 @@ validateForm() {
         {
             Two=Two && this.state.answerTwo.length>=1 
         }
-        if(this.state.maxTwo!==undefined)
+        if(this.state.maxTwo!==undefined && this.state.maxTwo!=="0")
         {
             Two=Two && this.state.answerTwo.length<=parseInt(this.state.maxTwo)
         }
@@ -145,7 +146,7 @@ validateForm() {
     var Three=true;
     if(this.state.questionThree!==undefined)
     {
-        if(this.state.minThree!==undefined)
+        if(this.state.minThree!==undefined && this.state.minThree!=="0")
         {
             Three=Three && this.state.answerThree.length>=parseInt(this.state.minThree)
         }
@@ -153,7 +154,7 @@ validateForm() {
         {
             Three=Three && this.state.answerThree.length>=1 
         }
-        if(this.state.maxThree!==undefined)
+        if(this.state.maxThree!==undefined && this.state.maxThree!=="0")
         {
             Three=Three && this.state.answerThree.length<=parseInt(this.state.maxThree)
         }
@@ -162,7 +163,7 @@ validateForm() {
     var Four=true;
     if(this.state.questionFour!==undefined)
     {
-        if(this.state.minFour!==undefined)
+        if(this.state.minFour!==undefined && this.state.minFour!=="0")
         {
             Four=Four && this.state.answerFour.length>=parseInt(this.state.minFour)
         }
@@ -170,7 +171,7 @@ validateForm() {
         {
             Four=Four && this.state.answerFour.length>=1 
         }
-        if(this.state.maxFour!==undefined)
+        if(this.state.maxFour!==undefined && this.state.maxFour!=="0")
         {
             Four=Four && this.state.answerFour.length<=parseInt(this.state.minFour)
         }
@@ -179,7 +180,7 @@ validateForm() {
     var Five=true;
     if(this.state.questionFive!==undefined)
     {
-        if(this.state.minFive!==undefined)
+        if(this.state.minFive!==undefined && this.state.minFive!=="0")
         {
             Five=Five && this.state.answerFive.length>=parseInt(this.state.minFive)
         }
@@ -187,7 +188,7 @@ validateForm() {
         {
             Five=Five && this.state.answerFive.length>=1 
         }
-        if(this.state.maxFive!==undefined)
+        if(this.state.maxFive!==undefined && this.state.maxFive!=="0")
         {
             Five=Five && this.state.answerFive.length<=parseInt(this.state.maxFive)
         }
@@ -195,7 +196,7 @@ validateForm() {
     var Six=true;
     if(this.state.questionSix!==undefined)
     {
-        if(this.state.minSix!==undefined)
+        if(this.state.minSix!==undefined && this.state.minSix!=="0")
         {
             Six=Six && this.state.answerSix.length>=parseInt(this.state.minSix)
         }
@@ -203,7 +204,7 @@ validateForm() {
         {
             Six=Six && this.state.answerSix.length>=1 
         }
-        if(this.state.maxSix!==undefined)
+        if(this.state.maxSix!==undefined && this.state.maxSix!=="0")
         {
             Six=Six && this.state.answerSix.length<=parseInt(this.state.minSix)
         }
@@ -212,7 +213,7 @@ validateForm() {
     var Seven=true;
     if(this.state.questionSeven!==undefined)
     {
-        if(this.state.minSeven!==undefined)
+        if(this.state.minSeven!==undefined && this.state.minSeven!=="0")
         {
             Seven=Seven && this.state.answerSeven.length>=parseInt(this.state.minSeven)
         }
@@ -220,7 +221,7 @@ validateForm() {
         {
             Seven=Seven && this.state.answerSeven.length>=1 
         }
-        if(this.state.maxSeven!==undefined)
+        if(this.state.maxSeven!==undefined && this.state.maxSeven!=="0")
         {
             Seven=Seven && this.state.answerSeven.length<=parseInt(this.state.minSeven)
         }
@@ -229,7 +230,7 @@ validateForm() {
     var Eight=true;
     if(this.state.questionEight!==undefined)
     {
-        if(this.state.minEight!==undefined)
+        if(this.state.minEight!==undefined && this.state.minEight!=="0" )
         {
             Eight=Eight && this.state.answerEight.length>=parseInt(this.state.minEight)
         }
@@ -237,7 +238,7 @@ validateForm() {
         {
             Eight=Eight && this.state.answerEight.length>=1 
         }
-        if(this.state.maxEight!==undefined)
+        if(this.state.maxEight!==undefined && this.state.maxEight!=="0")
         {
             Eight=Eight && this.state.answerEight.length<=parseInt(this.state.minEight)
         }
@@ -246,7 +247,7 @@ validateForm() {
     var Nine=true;
     if(this.state.questionNine!==undefined)
     {
-        if(this.state.minNine!==undefined)
+        if(this.state.minNine!==undefined && this.state.minNine!=="0")
         {
             Nine=Nine && this.state.answerNine.length>=parseInt(this.state.minNine)
         }
@@ -254,7 +255,7 @@ validateForm() {
         {
             Nine=Nine && this.state.answerNine.length>=1 
         }
-        if(this.state.maxNine!==undefined)
+        if(this.state.maxNine!==undefined && this.state.maxNine!=="0")
         {
             Nine=Nine && this.state.answerNine.length<=parseInt(this.state.minNine)
         }
@@ -264,7 +265,7 @@ validateForm() {
     var Ten=true;
     if(this.state.questionTen!==undefined)
     {
-        if(this.state.minTen!==undefined)
+        if(this.state.minTen!==undefined && this.state.minTen!=="0")
         {
             Ten=Ten && this.state.answerTen.length>=parseInt(this.state.minTen)
         }
@@ -272,7 +273,7 @@ validateForm() {
         {
             Ten=Ten && this.state.answerTen.length>=1 
         }
-        if(this.state.maxTen!==undefined)
+        if(this.state.maxTen!==undefined && this.state.maxTen!=="0")
         {
             Ten=Ten && this.state.answerTen.length<=parseInt(this.state.minTen)
         }
@@ -501,6 +502,40 @@ handleClick(error) {
      var MinMaxTen=(
         <small id="emailHelp" class="form-text text-muted">Min {this.state.minTen} characters, Max {this.state.maxTen} characters.</small>
      );
+     var QuestionOne=(
+        <div>
+            
+            <h6 style={{color:"black", fontFamily:"serif"}}>
+                {this.state.questionOne}<span style={{color:"red", fontFamily:"monospace",fontSize:"1em",backgroundColor:'rgba(0,0,0.5,0.01)'}}>&nbsp;*</span>
+            </h6> 
+
+            <textarea name="answerOne" value={this.state.answerOne} onChange={this.changeHandler} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}>
+            </textarea>
+            {this.state.minOne!==undefined && this.state.maxOne!==undefined && this.state.minOne!=="0" && this.state.maxOne!=="0"? MinMaxOne: this.state.minOne!==undefined && this.state.minOne!=="0" ? MinOne: this.state.maxOne!==undefined && this.state.maxOne!=="0"?MaxOne:null}
+
+            <br/>
+            <br/>
+
+        </div>
+     );
+
+     var QuestionTwo=(
+        <div>
+            
+            <h6 style={{color:"black", fontFamily:"serif"}}>
+                {this.state.questionTwo}<span style={{color:"red", fontFamily:"monospace",fontSize:"1em",backgroundColor:'rgba(0,0,0.5,0.01)'}}>&nbsp;*</span>
+            </h6> 
+
+            <textarea name="answerTwo" value={this.state.answerTwo} onChange={this.changeHandler} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}>
+            </textarea>
+            {this.state.minTwo!==undefined && this.state.maxTwo!==undefined && this.state.minTwo!=="0" && this.state.maxTwo!=="0"? MinMaxTwo: this.state.minTwo!==undefined && this.state.minTwo!=="0" ? MinTwo: this.state.maxTwo!==undefined && this.state.maxTwo!=="0"?MaxTwo:null}
+
+            <br/>
+            <br/>
+
+        </div>
+     );
+
      var QuestionThree=(
         <div>
             
@@ -510,7 +545,7 @@ handleClick(error) {
 
             <textarea name="answerThree" value={this.state.answerThree} onChange={this.changeHandler} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}>
             </textarea>
-            {this.state.minThree!==undefined && this.state.maxThree!==undefined ? MinMaxThree: this.state.minThree!==undefined ? MinThree:this.state.maxThree!==undefined?MaxThree:null}
+            {this.state.minThree!==undefined && this.state.maxThree!==undefined && this.state.minThree!=="0" && this.state.maxThree!=="0"? MinMaxThree: this.state.minThree!==undefined && this.state.minThree!=="0" ? MinThree: this.state.maxThree!==undefined && this.state.maxThree!=="0"?MaxThree:null}
 
             <br/>
             <br/>
@@ -526,7 +561,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerFour" onChange={this.changeHandler} value={this.state.answerFour} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minFour!==undefined && this.state.maxFour!==undefined ? MinMaxFour: this.state.minFour!==undefined ? MinFour:this.state.maxFour!==undefined?MaxFour:null}
+            {this.state.minFour!==undefined && this.state.maxFour!==undefined && this.state.minFour!=="0" && this.state.maxFour!=="0"? MinMaxFour: this.state.minFour!==undefined && this.state.minFour!=="0" ? MinFour: this.state.maxFour!==undefined && this.state.maxFour!=="0"?MaxFour:null}
 
             <br/>
             <br/>
@@ -542,7 +577,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerFive" onChange={this.changeHandler} value={this.state.answerFive} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minFive!==undefined && this.state.maxFive!==undefined ? MinMaxFive: this.state.minFive!==undefined ? MinFive:this.state.maxFive!==undefined?MaxFive:null}
+            {this.state.minFive!==undefined && this.state.maxFive!==undefined && this.state.minFive!=="0" && this.state.maxFive!=="0"? MinMaxFive: this.state.minFive!==undefined && this.state.minFive!=="0" ? MinFive: this.state.maxFive!==undefined && this.state.maxFive!=="0"?MaxFive:null}
 
             <br/>
             <br/>
@@ -558,7 +593,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerSix" onChange={this.changeHandler} value={this.state.answerSix} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minSix!==undefined && this.state.maxSix!==undefined ? MinMaxSix: this.state.minSix!==undefined ? MinSix:this.state.maxSix!==undefined?MaxSix:null}
+            {this.state.minSix!==undefined && this.state.maxSix!==undefined && this.state.minSix!=="0" && this.state.maxSix!=="0"? MinMaxSix: this.state.minSix!==undefined && this.state.minSix!=="0" ? MinSix: this.state.maxSix!==undefined && this.state.maxSix!=="0"?MaxSix:null}
 
             <br/>
             <br/>
@@ -574,7 +609,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerSeven" onChange={this.changeHandler} value={this.state.answerSeven} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minSeven!==undefined && this.state.maxSeven!==undefined ? MinMaxSeven: this.state.minSeven!==undefined ? MinSeven:this.state.maxSeven!==undefined?MaxSeven:null}
+            {this.state.minSeven!==undefined && this.state.maxSeven!==undefined && this.state.minSeven!=="0" && this.state.maxSeven!=="0"? MinMaxSeven: this.state.minSeven!==undefined && this.state.minSeven!=="0" ? MinSeven: this.state.maxSeven!==undefined && this.state.maxSeven!=="0"?MaxSeven:null}
 
             <br/>
             <br/>
@@ -590,7 +625,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerEight" onChange={this.changeHandler} value={this.state.answerEight} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minEight!==undefined && this.state.maxEight!==undefined ? MinMaxEight: this.state.minEight!==undefined ? MinEight:this.state.maxEight!==undefined?MaxEight:null}
+            {this.state.minEight!==undefined && this.state.maxEight!==undefined && this.state.minEight!=="0" && this.state.maxEight!=="0"? MinMaxEight: this.state.minEight!==undefined && this.state.minEight!=="0" ? MinEight: this.state.maxEight!==undefined && this.state.maxEight!=="0"?MaxEight:null}
 
             <br/>
             <br/>
@@ -606,7 +641,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerNine" onChange={this.changeHandler} value={this.state.answerNine} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minNine!==undefined && this.state.maxNine!==undefined ? MinMaxNine: this.state.minNine!==undefined ? MinNine:this.state.maxNine!==undefined?MaxNine:null}
+            {this.state.minNine!==undefined && this.state.maxNine!==undefined && this.state.minNine!=="0" && this.state.maxNine!=="0"? MinMaxNine: this.state.minNine!==undefined && this.state.minNine!=="0" ? MinNine: this.state.maxNine!==undefined && this.state.maxNine!=="0"?MaxNine:null}
 
             <br/>
             <br/>
@@ -622,7 +657,7 @@ handleClick(error) {
             </h6> 
 
             <textarea name="answerTen" onChange={this.changeHandler} value={this.state.answerTen} class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
-            {this.state.minTen!==undefined && this.state.maxTen!==undefined ? MinMaxTen: this.state.minTen!==undefined ? MinTen:this.state.maxTen!==undefined?MaxTen:null}
+            {this.state.minTen!==undefined && this.state.maxTen!==undefined && this.state.minTen!=="0" && this.state.maxTen!=="0"? MinMaxTen: this.state.minTen!==undefined && this.state.minTen!=="0" ? MinTen: this.state.maxTen!==undefined && this.state.maxTen!=="0"?MaxTen:null}
 
             <br/>
             <br/>
@@ -725,15 +760,18 @@ handleClick(error) {
 
             <textarea name="answerTwo" onChange={this.changeHandler} value={this.state.answerTwo}class="form-control question-answer" id="answer-465782" placeholder="Your Answer" style={{"height": "100px", "marginTop": "0px", "marginBottom": "0px"}}></textarea>
             {this.state.minTwo!==undefined && this.state.maxTwo!==undefined ? MinMaxTwo: this.state.minTwo!==undefined ? MinTwo:this.state.maxTwo!==undefined?MaxTwo:null}
+            
+            <br/>
+            <br/>
 
-            {this.state.questionThree===''?QuestionThree:null}
-            {this.state.questionFour===''?QuestionFour:null}
-            {this.state.questionFive===''?QuestionFive:null}
-            {this.state.questionSix===''?QuestionSix:null}
-            {this.state.questionSeven===''?QuestionSeven:null}
-            {this.state.questionEight===''?QuestionEight:null}
-            {this.state.questionNine===''?QuestionNine:null}
-            {this.state.questionTen===''?QuestionTen:null}
+            {this.state.questionThree!==undefined?QuestionThree:null}
+            {this.state.questionFour!==undefined?QuestionFour:null}
+            {this.state.questionFive!==undefined?QuestionFive:null}
+            {this.state.questionSix!==undefined?QuestionSix:null}
+            {this.state.questionSeven!==undefined?QuestionSeven:null}
+            {this.state.questionEight!==undefined?QuestionEight:null}
+            {this.state.questionNine!==undefined?QuestionNine:null}
+            {this.state.questionTen!==undefined?QuestionTen:null}
 
             <div >
              <Button
@@ -774,7 +812,8 @@ handleClick(error) {
             <br/>
             <br/>
             <br/>
-            
+            {this.state.questionOne===undefined ?null:QuestionOne}
+            {this.state.questionTwo===undefined ?null:QuestionTwo}
             {this.state.questionThree===undefined ?null:QuestionThree}
             {this.state.questionFour===undefined?null:QuestionFour}
             {this.state.questionFive===undefined ?null:QuestionFive}

@@ -9,6 +9,7 @@ const cvs = require('./routes/api/cvs')
 const careerAdvisors = require('./routes/api/careerAdvisors')
 const categories = require('./routes/api/categories')
 const countries = require('./routes/api/countries');
+const admins = require('./routes/api/admins');
 
 const app = express()
 
@@ -34,6 +35,8 @@ app.use('/routes/api/cvs', cvs)
 app.use('/routes/api/careerAdvisors', careerAdvisors)
 app.use('/routes/api/categories', categories)
 app.use('/routes/api/countries', countries)
+app.use('/routes/api/admins', admins)
+
 
 app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')

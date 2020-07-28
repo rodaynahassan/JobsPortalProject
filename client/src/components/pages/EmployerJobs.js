@@ -33,7 +33,7 @@ import business from '../layout/business.png'
 import { MDBContainer, MDBRow, MDBCol, MDBBtn, MDBCard, MDBCardBody, MDBInput } from 'mdbreact';
 
 
-class FilteredJobs extends Component
+class EmployerJobs extends Component
 {
     constructor(props){
         super(props);
@@ -43,7 +43,6 @@ class FilteredJobs extends Component
             modalShow: false,
             filters:[],
             filters1:[],
-            flag:false,
         };
 }
 
@@ -54,10 +53,34 @@ changeHandler = (event) => {
   console.log(temp)
 };
 
+redirectApplicants(jobId)
+{
+  localStorage.setItem('jobId',jobId)
+  document.location.href = '/applicants';
+}
+redirectDelete(jobId)
+{
+  axios.delete('/routes/api/jobs/deleteAJob/'+jobId)
+  .then((response) => {
+    swal('The job has been deleted.')
+    setTimeout("document.location.href = '/postedjobs';",1500);
+    });
+}
 redirectFilter()
 {
   localStorage.setItem('filters',this.state.filters)
   localStorage.setItem('filters1',this.state.filters1)
+  console.log(localStorage.getItem('filters'))
+  // var apiBaseUrl = '/routes/api/jobs/getJobsByCategoryAndType';
+  //     var payload = {
+  //       filters: this.state.filters,
+  //       filters1: this.state.filters1
+  //     };
+  //       axios.post(apiBaseUrl,payload)
+  //               .then((response) => {
+  //                   console.log(response.data.data)
+  //                   this.setState({jobs:response.data.data});
+  //               });
 document.location.href = '/filteredjobs';
 }
 
@@ -111,135 +134,93 @@ handleChange1 = (event) => {
 redirectGet(jobId) {
   localStorage.setItem('jobId', jobId);
   console.log(jobId)
-  document.location.href = '/jobdetails';
+  document.location.href = '/details';
 }
 
-redirectSave(jobId) {
-  var apiBaseUrl = '/routes/api/jobs/saveAJob/5e7d35d36626c516005f62a1/'+jobId
-  axios.put(apiBaseUrl)
-        .then(function(response) {
-          if(response.data.msg!=="You have already saved this job before. You can view it in the 'Saved jobs' page.")
-          {
-            swal({
-                title: "You have saved the job successfully!",
-                icon: "success",
-                buttons: {
-                    catch: {
-                        text: "Show saved jobs",
-                        value: "saved",
-                      },
-                      defeat: {
-                        text: "Homepage",
-                        value: "home",
-                      },  
-                }
-              })
-              .then((value) => {
-                switch (value) {
+// redirectSave(jobId) {
+//   var apiBaseUrl = '/routes/api/jobs/saveAJob/5e7d35d36626c516005f62a1/'+jobId
+//   axios.put(apiBaseUrl)
+//         .then(function(response) {
+//           if(response.data.msg!=="You have already saved this job before. You can view it in the 'Saved jobs' page.")
+//           {
+//             swal({
+//                 title: "You have saved the job successfully!",
+//                 icon: "success",
+//                 buttons: {
+//                     catch: {
+//                         text: "Show saved jobs",
+//                         value: "saved",
+//                       },
+//                       defeat: {
+//                         text: "Homepage",
+//                         value: "home",
+//                       },  
+//                 }
+//               })
+//               .then((value) => {
+//                 switch (value) {
             
-                  case "saved":
-                    document.location.href = '/savedjobs';
-                    break;
-                  case "home":
-                     document.location.href = '/';
-                     break;  
-                  default:
-                    document.location.href = '/';
-                }
-              });
-            }
-            else
-            {
-              swal({
-                title: "You have already saved this job before. You can view it in the 'Saved jobs' page.",
-                buttons: {
-                    catch: {
-                        text: "Show saved jobs",
-                        value: "saved",
-                      },
-                      defeat: {
-                        text: "Homepage",
-                        value: "home",
-                      },  
-                }
-              })
-              .then((value) => {
-                switch (value) {
+//                   case "saved":
+//                     document.location.href = '/savedjobs';
+//                     break;
+//                   case "home":
+//                      document.location.href = '/jobs';
+//                      break;  
+//                   default:
+//                     document.location.href = '/jobs';
+//                 }
+//               });
+//             }
+//             else
+//             {
+//               swal({
+//                 title: "You have already saved this job before. You can view it in the 'Saved jobs' page.",
+//                 buttons: {
+//                     catch: {
+//                         text: "Show saved jobs",
+//                         value: "saved",
+//                       },
+//                       defeat: {
+//                         text: "Homepage",
+//                         value: "home",
+//                       },  
+//                 }
+//               })
+//               .then((value) => {
+//                 switch (value) {
             
-                  case "saved":
-                    document.location.href = '/savedjobs';
-                    break;
-                  case "home":
-                     document.location.href = '/';
-                     break;  
-                  default:
-                    document.location.href = '/';
-                }
-              });
-            }       
-            })
-}
+//                   case "saved":
+//                     document.location.href = '/savedjobs';
+//                     break;
+//                   case "home":
+//                      document.location.href = '/jobs';
+//                      break;  
+//                   default:
+//                     document.location.href = '/jobs';
+//                 }
+//               });
+//             } 
+                     
+//             })
+// }
 componentDidMount()
     {
-        var apiBaseUrl = '/routes/api/jobs/getJobsByCategoryAndType';
-        var payload = {
-          categories: localStorage.getItem('filters'),
-          types: localStorage.getItem('filters1')
-        };
-        console.log(localStorage.getItem('filters'))
-          axios.post(apiBaseUrl,payload)
-                  .then((response) => {
-                      console.log("hi")
-                      console.log(response.data.data)
-                      this.setState({jobs:response.data.data});
-                      if(response.data.data.length===0){
-                        this.setState({flag:true})
-                    }   
-                  });
-
-       
-         }         
-                  
-    
-  
-noJobs=()=>
-{
-    swal({
-        title: "Unfortunately, there are no jobs based on your filters.",
-        text: "Try to search for another categories/types and Good Luck!",
-        icon: "error",
-        buttons: {
-            catch: {
-                text: "Browse another jobs",
-                value: "home",
-              },
-        }
-      })
-      .then((value) => {
-        switch (value) {
-    
-          case "home":
-             document.location.href = '/jobs';
-             break;  
-          default:
-            document.location.href = '/jobs';
-        }
+      axios.get('/routes/api/jobs/getJobsOfAnEmployer/5ed02ba21a7ba21e60d0d064')
+      .then((response) => {
+          console.log(response.data.data)
+         
+          this.setState({jobs:response.data.data});
+          
+         
       });
-}
-getAttributes = () => {
+    }
+  
 
+getAttributes = () => {
     let modalClose = () => this.setState({ modalShow: false });
     return this.state.jobs.map((Job, index) => {
-      // this.setState({datePosted:Job.datePosted.substring(0,10)})
-      // // const date=this.state.datePosted.substring(0,10)
-      // console.log(this.state.datePosted)
-    //   con
-      // var languages=Job.languages
-      // var languagesS=""
-      // for(var j=0;j<languages.length;j++){
-      //   languagesS=languagesS+","+ languages[j]
-      // }
-      var it=
+
+        var it=
      (
       <div>
       <img src={IT} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
@@ -333,7 +314,7 @@ getAttributes = () => {
      var Fashion=
      (
       <div>
-      <img src={administration} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
+      <img src={fashion} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
       </div>
      );
 
@@ -378,7 +359,6 @@ getAttributes = () => {
       <img src={business} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
       </div>
      );
-
       return (
         <div>
         <br/>
@@ -416,7 +396,6 @@ getAttributes = () => {
             {Job.category==='Medical'? Medical:null}
             {Job.category==='Legal'? Legal:null}
             {Job.category==='Business development'? Business:null}
-
             <h8
               style={{color:"black", fontStyle:"monospace", fontWeight:"bold",fontSize:"1.2em"}}>
                  {Job.companyName}-&nbsp;
@@ -442,20 +421,29 @@ getAttributes = () => {
               style={{color:"grey", fontStyle:"italic",fontSize:"0.77em"}}>
                  (Posted on {Job.datePosted})
             </h7>   
+
             <Button  
-              title="Click to view the job details"
-              onClick={() => this.redirectGet(Job._id)}
-              style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.9em",marginLeft:"600px",marginTop:"10px"}}  
+              onClick={() => this.redirectDelete(Job._id)}
+              style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.8em",marginLeft:"600px",marginTop:"11px"}}  
               >
-              Details
+              Delete
               </Button> 
 
+             <Button  
+              title="Click to view the job details"
+              onClick={() => this.redirectApplicants(Job._id)}
+              style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.7em",marginLeft:"490px",marginTop:"-72px"}}  
+              >
+             Applicants 
+              </Button> 
+
+
 			 <Button  
-				title="Click to save the job"
-				onClick={() => this.redirectSave(Job._id)}
-				style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.9em",marginLeft:"470px",marginTop:"-77px"}}  
+				title="Click to view the job"
+        onClick={() => this.redirectGet(Job._id)}
+				style={{ width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.8em",marginLeft:"380px",marginTop:"-118px"}}  
 				>
-            Save
+          Details
             </Button>               
             </div>
           </Card.Body>
@@ -463,65 +451,15 @@ getAttributes = () => {
         </div>
         
       );
-        
-    })
+    })};
 
-};
-// noJobs=()=>{
-//     // window.setTimeout(this.noJobs,4500)
-
-//     return(
-
-//         <div>
-//         <br/>
-//         <br/>
-//         <br/>
-//         <Card 
-//         style={{
-//             width:"50%",
-//             height:"250px",
-//             paddingLeft:"10px",
-//             backgroundColor:'rgba(0,0,0,0.001)',
-//             marginLeft:"670px"
-//             }}
-//         >
-//           <Card.Body style={{backgroundColor:"dark"}}>
-//             <div>
-//               <br/>
-//               <br/>
-//            <span style={{color:"white", fontStyle:"italic",fontSize:"20px", fontWeight:"bold",backgroundColor:"black"}}>&nbsp;Unfortunately, there are no jobs based on your filters.&nbsp;
-//                     </span>
-            
-
-            
-//             </div>
-//           </Card.Body>
-//         </Card>
-//         </div>
-        
-//       );
-    
-// }
   render() {
-    // {window.setTimeout(this.noJobs,4500)}
-
-    // var NoJobs=(
-    //   <div>
-    //     <br/>
-    //     <br/>
-    //     <br/>
-    //     <h4>
-    //         No jobs
-    //         </h4>
-    //       </div>
-    //     );
+    
     return (
       
         <div>
 
-            {this.state.flag===false? this.getAttributes():this.noJobs()}
-
-          {/* {this.getAttributes()} */}
+          {this.getAttributes()}
           <Card 
         style={{
             width:"490px",
@@ -542,7 +480,7 @@ getAttributes = () => {
             </u> 
         <br/>
             
-              <span style={{backgroundColor: "#66B2FF",color:"white",fontSize:"15px", fontStyle:"monospace",width:"80px",height:"30px"}}>&nbsp;Category&nbsp; </span>
+              <span style={{borderStyle:"solid",backgroundColor: "#66B2FF",color:"white",fontSize:"15px", fontStyle:"monospace",width:"80px",height:"30px"}}>&nbsp;Category&nbsp; </span>
               <br/>
               <div class="row"  >
               <div class="col-sm-4">
@@ -871,4 +809,4 @@ getAttributes = () => {
     );
   }
 }
-export default FilteredJobs
+export default EmployerJobs

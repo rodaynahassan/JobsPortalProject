@@ -24,7 +24,7 @@ import medical from '../layout/medical.png'
 import legal from '../layout/legal.png'
 import business from '../layout/business.png'
 
-class JobDetails extends Component
+class EmployerJobDetails extends Component
 {
     constructor(props){
         super(props);
@@ -50,8 +50,8 @@ class JobDetails extends Component
             datePosted:"",
             job:"",
             newLanguages:"",
-            applicationDeadline:'',
-            modalShow: false
+            modalShow: false,
+            applicationDeadline:""
         };
 }
 
@@ -59,7 +59,7 @@ componentDidMount()
     {
         axios.get('/routes/api/jobs/getByID/'+localStorage.getItem('jobId'))
                 .then((response) => {
-                    console.log(response.data.data.applicationDeadline)
+                    console.log(response.data.data.startDate)
                     this.setState({
                       job:response.data.data,
                       jobTitle:response.data.data.jobTitle,
@@ -86,107 +86,21 @@ componentDidMount()
                     });
                 });
   }
-redirectApply(jobId) {
-  localStorage.setItem('jobId', jobId);
-  console.log(jobId)
-  axios.get('/routes/api/jobs/checkApplied/5e7d35d36626c516005f62a1/'+localStorage.getItem('jobId'))
-                .then((response) => {
-                   console.log(response.msg)
-                   if(response.data.msg==="You've already applied to this job. You can view, edit and track your application in the 'Applications' page.")
-                   {
-                    return swal("You've already applied to this job. You can view, edit and track your application in the 'Applications' page.")
-                   }
-                   else
-                   {
-                    document.location.href = '/application';
-                   }
-                    });
-}
-
-redirectSave(jobId) {
-  var apiBaseUrl = '/routes/api/jobs/saveAJob/5e7d35d36626c516005f62a1/'+jobId
-  axios.put(apiBaseUrl)
-        .then(function(response) {
-          if(response.data.msg!=="You have already saved this job before. You can view it in the 'Saved jobs' page.")
-          {
-            swal({
-                title: "You have saved the job successfully!",
-                icon: "success",
-                buttons: {
-                    catch: {
-                        text: "Show saved jobs",
-                        value: "saved",
-                      },
-                      defeat: {
-                        text: "Homepage",
-                        value: "home",
-                      },  
-                }
-              })
-              .then((value) => {
-                switch (value) {
-            
-                  case "saved":
-                    document.location.href = '/savedjobs';
-                    break;
-                  case "home":
-                     document.location.href = '/';
-                     break;  
-                  default:
-                    document.location.href = '/';
-                }
-              });
-            }
-            else
-            {
-              swal({
-                title: "You have already saved this job before. You can view it in the 'Saved jobs' page.",
-                buttons: {
-                    catch: {
-                        text: "Show saved jobs",
-                        value: "saved",
-                      },
-                      defeat: {
-                        text: "Homepage",
-                        value: "home",
-                      },  
-                }
-              })
-              .then((value) => {
-                switch (value) {
-            
-                  case "saved":
-                    document.location.href = '/savedjobs';
-                    break;
-                  case "home":
-                     document.location.href = '/';
-                     break;  
-                  default:
-                    document.location.href = '/';
-                }
-              });
-            } 
-            })
-}
+redirectDelete(jobId)
+  {
+    axios.delete('/routes/api/jobs/deleteAJob/'+jobId)
+    .then((response) => {
+      swal('The job has been deleted.')
+      setTimeout("document.location.href = '/postedjobs';",1500);
+      });
+  }
+redirectApplicants(jobId)
+{
+  localStorage.setItem('jobId',jobId)
+  document.location.href = '/applicants';
+}  
 
 getAttributes = () => {
-  var jobReq=
-  (
-      <div>
-        <u
-          style={{color:"black",fontWeight:"bold", fontStyle:"italic"}}>
-             Job Requirements:
-        </u> 
-        <br/>
-
-        <p
-          style={{color:"black",fontFamily:"monospace",fontSize:"1em"}}>
-            {this.state.jobRequirements}
-        </p>
-
-      </div>
-  );
-
     var Experience=(
       <div>
           <u
@@ -200,6 +114,56 @@ getAttributes = () => {
            </div>              
 
     );
+    var jobReq=
+    (
+        <div>
+          <u
+            style={{color:"black",fontWeight:"bold", fontStyle:"italic"}}>
+               Job Requirements:
+          </u> 
+          <br/>
+
+          <p
+            style={{color:"black",fontFamily:"monospace",fontSize:"1em"}}>
+              {this.state.jobRequirements}
+          </p>
+
+        </div>
+    );
+
+    var StartDate=
+    (
+        <div>
+        <u
+            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+               Start Date:
+          </u> 
+          <h9
+            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+               &nbsp;{this.state.startDate.substring(0,10)}.
+          </h9> 
+
+          <br/>
+    
+        </div>
+    );
+
+    var ApplicationDeadline=
+    (
+        <div>
+        <u
+            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+              Application Deadline:
+          </u> 
+          <h9
+            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+               &nbsp;{this.state.applicationDeadline.substring(0,10)}.
+          </h9> 
+
+          <br/>
+    
+        </div>
+    );
 
     var it=
      (
@@ -208,6 +172,22 @@ getAttributes = () => {
       </div>
      );
 
+     var Duration =
+     (
+        <div>
+        <u
+            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+               Duration:
+          </u> 
+          <h9
+            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+               &nbsp;{this.state.duration}.
+          </h9>
+
+          <br/>
+
+        </div>
+     );
      var Fashion=
      (
       <div>
@@ -340,59 +320,6 @@ getAttributes = () => {
       <img src={business} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{this.state.category}&nbsp;</span>
       </div>
      );
-
-     var Duration =
-     (
-        <div>
-        <u
-            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
-               Duration:
-          </u> 
-          <h9
-            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
-               &nbsp;{this.state.duration}.
-          </h9>
-
-          <br/>
-
-        </div>
-     );
-
-     var StartDate=
-     (
-         <div>
-         <u
-             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
-                Start Date:
-           </u> 
-           <h9
-             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
-                &nbsp;{this.state.startDate.substring(0,10)}.
-           </h9> 
- 
-           <br/>
-     
-         </div>
-     );
-
-     var ApplicationDeadline=
-     (
-         <div>
-         <u
-             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
-               Application Deadline:
-           </u> 
-           <h9
-             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
-                &nbsp;{this.state.applicationDeadline.substring(0,10)}.
-           </h9> 
- 
-           <br/>
-     
-         </div>
-     );
- 
- 
     return (
       <div>
       <br/>
@@ -475,31 +402,9 @@ getAttributes = () => {
           ________________________________________________________________________________________________
 
           <br/>
-          {this.state.startDate==="Not needed"?null:StartDate}          
-          {this.state.duration==='Not needed'?null: Duration}
 
-          <u
-            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
-               Start Date:
-          </u> 
-          <h9
-            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
-               &nbsp;{this.state.startDate}.
-          </h9> 
-
-          <br/>
-          
-          <u
-            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
-               Duration:
-          </u> 
-          <h9
-            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
-               &nbsp;{this.state.duration}.
-          </h9>
-
-          <br/>
-
+        {this.state.startDate==="Not needed"?null:StartDate}          
+        {this.state.duration==='Not needed'?null: Duration}
           <u
             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
               Salary:
@@ -518,7 +423,7 @@ getAttributes = () => {
             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
                &nbsp;{this.state.vacancies}.
           </h9> 
-          {this.state.experienceNeeded!=='Not needed'? Experience:null}
+          {this.state.experienceNeeded!=="Not needed"? Experience:null}
           {this.state.applicationDeadline==="Not needed"? null:ApplicationDeadline}
 
           <div 
@@ -580,16 +485,16 @@ getAttributes = () => {
           >
           <Button  
           title="Click to save the job details"
-          onClick={() => this.redirectSave(this.state.job._id)}
-          style={{position:"absolute",float:"right",right:"35px",width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.9em"}}>
-          Save
+          onClick={() => this.redirectDelete(this.state.job._id)}
+          style={{position:"absolute",float:"right",right:"35px",width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.8em"}}>
+          Delete
           </Button> 
 
           <Button  
           title="Click to apply to the job"
-          onClick={() => this.redirectApply(this.state.job._id)}
-          style={{position:"absolute",float:"right",left:"35px",width: '90px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.9em"}}>
-          Apply
+          onClick={() => this.redirectApplicants(this.state.job._id)}
+          style={{position:"absolute",float:"right",left:"35px",width: '100px', height: '40px',backgroundColor:"#3399FF" ,color:"white",hover:"white",fontSize:"0.8em"}}>
+          Applicants
           </Button> 
           </div>     
            </div> 
@@ -612,4 +517,4 @@ getAttributes = () => {
         );
     }
   }
-export default JobDetails
+export default EmployerJobDetails

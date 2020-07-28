@@ -68,7 +68,7 @@ class SideBar extends Component {
                             </a>
                         </NavIcon>
                         <NavText>
-                            <a style={{ paddingRight:"90px" ,fontSize:"15px" }}href="/">Personal Info</a>
+                            <a style={{ paddingRight:"90px" ,fontSize:"15px" }}href="/personalinfo">Personal Info</a>
                         </NavText>
                     </NavItem>
 

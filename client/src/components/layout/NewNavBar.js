@@ -28,7 +28,7 @@ class NewNavBar extends Component {
 		};
 
 		axios
-			.get('/routes/api/employers/getByID/5ed02ba21a7ba21e60d0d064')
+			.get('/routes/api/admins/getByID/5f1f8b403ad257085cbc06cf')
 			.then((response) => {
                 // console.log(response.data.data.gender)
 				this.setState({
@@ -48,7 +48,7 @@ class NewNavBar extends Component {
     }
     
     viewProfile(){
-        document.location.href = '/personalinfo';
+        document.location.href = '/admininfo';
     }
 
     editProfile(){
@@ -302,10 +302,120 @@ class NewNavBar extends Component {
 				</nav>
 			</div>
 		);
+
+		var Admin=
+		(
+			<div style={{  justifyItems: 'center' }}>
+				<nav
+					class="navbar navbar-expand-sm bg-black navbar-dark"
+					style={{
+						backgroundColor:"black",
+						position: 'fixed',
+						padding: '0.5px',
+						listStyle: 'none',
+						margin: ' 0 auto',
+						left: '0',
+						top: '0',
+						zIndex: '1',
+						width: '100%'
+					}}
+				>
+					<img src={logo_edited} width="35" heigth="10" style={{ color: "#3388FF" , marginLeft:"100px"}} alt="" />
+					<ul class="navbar-nav nav-fill w-100">
+						
+                        <li class="nav-item" color="blue">
+                            <input type="text" placeholder="Search for jobs" color="blue"fontColor= "#333FFF" name="search" style={{marginTop:"10px", marginLeft:"-65px",color:"blue"}} />
+                            <button type="submit" backgroundColor="#333FFF"><i class="fa fa-search" color="#333FFF"></i></button>
+						</li>
+
+                        <li class="nav-item" >
+							<a
+								class="nav-link"
+								className="fa fa-briefcase"
+                                // href="/"
+                                href="/adminjobs"
+								style={{ color: "#3C54F5", paddingTop: '14px', fontSize: '0.85em',marginLeft:"-125px" }}
+							> 
+							<br/>
+							 All jobs
+							</a>
+						</li>
+
+						<li class="nav-item" color="white">
+							<a
+								class="nav-link"
+								className="fa fa-user"
+								href="/jobseekers"
+								style={{ color: "#3C54F5", paddingTop: '14px', fontSize: '0.85em',marginLeft:"-255px" }}
+							>
+							<br/>
+							  All job seekers
+							</a>
+						</li>
+
+						<li class="nav-item" color="white">
+							<a
+								class="nav-link"
+								href="/employers"
+								className="fa fa-building"
+								style={{ color: "#3C54F5", paddingTop: '14px', fontSize: '0.85em',marginLeft:"-365px" }}
+								>
+							<br/>
+								All employers/companies
+							  </a>
+						</li>
+
+						<li class="nav-item" color="white">
+							<a
+								class="nav-link"
+								href="/notifications"
+								className="fas fa-bell"
+								style={{ color: "#3C54F5", paddingTop: '13px', fontSize: '0.85em',marginLeft:"-475px"}}
+								>
+									<span class="badge badge-light" >3</span>
+							<br/>
+							Notifications
+							  </a>
+						</li>
+
+						<li class="nav-item dropdown">
+							<Dropdown class="widthd" multiple="multiple" >
+								<Dropdown.Toggle variant={blue100} >
+									<i className="fas fa-user-tie" style={{ color: "#3C54F5", fontSize: '0.9em'}}/>
+								</Dropdown.Toggle>
+								<Dropdown.Menu height="20px" multiple="multiple">
+								<Dropdown.Item disabled header>{this.state.firstName}&nbsp;{this.state.lastName}</Dropdown.Item>
+								<Dropdown.Divider />	
+									<Dropdown.Item
+										fontcolor= "#333FFF" 
+										onClick={() => this.viewProfile()}
+										style={{ textAlign: 'left', color: "#3C54F5" }}
+										// className="fas fa-user"
+									>
+										{' '}
+										View Profile
+									</Dropdown.Item>
+									<Dropdown.Item
+										onClick={() => this.logOut()}
+										style={{ textAlign: 'left', color: "#3C54F5" }}
+									>
+										{' '}
+										Log out
+									</Dropdown.Item>
+								</Dropdown.Menu>
+							</Dropdown>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		);
+
 			return (
 			<div style={{  justifyItems: 'center' }}>
 				{this.state.userType==='jobSeeker'?JobSeeker:null}
 				{this.state.userType==='employer'?Employer:null}
+				{this.state.userType==='Admin'?Admin:null}
+
 
 			</div>
 		);

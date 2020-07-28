@@ -4,7 +4,7 @@ const moment = require('moment');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 const Application = new Schema({
-    applicationType: { type: String, enum: ['Default','Customized','Mix'],required:true },
+    applicationType: { type: String, enum: ['Default','Customized','Mixed'],required:true },
     employerId:{type: ObjectId},
     jobId:{type: ObjectId},
     questionOne: { type: String,required:false},

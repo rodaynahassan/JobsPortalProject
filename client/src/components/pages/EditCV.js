@@ -15,11 +15,11 @@ import swal from 'sweetalert';
 import { ButtonToolbar } from 'react-bootstrap';
 import { ButtonGroup } from 'react-bootstrap';
 import { blue300 } from 'material-ui/styles/colors';
-import AddALanguage from '../pages/AddALanguage';
-import AddACommunicationSkill from '../pages/AddACommunicationSkill';
-import AddAnInternship from '../pages/AddAnInternship';
-import AddAWorkExperience from '../pages/AddAWorkExperience';
-import AddAStudentActivity from '../pages/AddAStudentActivity';
+import AddALanguage from './AddALanguageCV';
+import AddACommunicationSkill from './AddACommunicationSkillCV';
+import AddAnInternship from './AddAnInternshipCV';
+import AddAWorkExperience from './AddAWorkExperienceCV';
+import AddAStudentActivity from './AddAStudentActivityCV';
 
 
 var mongoose = require('mongoose');

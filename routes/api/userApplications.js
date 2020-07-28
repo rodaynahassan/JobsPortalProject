@@ -25,6 +25,15 @@ router.get('/getByuserID/:userId', async (req, res) =>{
   return res.json({ data: userApplications })
 });
 
+// get jobs that a certain user applied to userapplication by userID
+router.get('/getByJobId/:jobId', async (req, res) =>{
+  const application = await applicationController.search('jobId', req.params.jobId);
+  console.log(application)
+  var applicationId =""+application[0]._id
+  const userApplications = await userApplicationController.search('applicationId', applicationId);
+  return res.json({ data: userApplications })
+});
+
 // get an application
 router.get('/getApplication/:id', async (req, res) =>{
   const userApplication = await userApplicationController.search('id', req.params.id);
