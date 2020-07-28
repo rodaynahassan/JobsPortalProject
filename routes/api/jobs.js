@@ -4,6 +4,11 @@ const Job = require('../../models/job');
 const jobController= require('../../controllers/jobController');
 const JobSeeker = require('../../models/jobSeeker');
 const jobSeekerController= require('../../controllers/jobSeekerController');
+const UserApplication = require('../../models/userApplication');
+const userApplicationController= require('../../controllers/userApplicationController');
+const Application = require('../../models/application');
+const applicationController= require('../../controllers/applicationController');
+
 const mongoose = require('mongoose');
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
@@ -23,8 +28,8 @@ router.get('/getByID/:id', async (req, res) =>{
 router.get('/getJobsOfAnEmployer/:employerId', async (req,res) => {
      const employerId = req.params.employerId
      const jobs= await jobController.search('employerId', employerId)
-     res.json({jobs})
-});
+     return res.json({ data: jobs });
+    });
 
 //Create New job
 router.post('/CreateANewJob/:employerId', async (req, res) => {
@@ -94,8 +99,6 @@ router.put('/unsaveAJob/:userId/:jobId', async (req, res) =>{
   var flag=false
   for(var i=0;i<jobs.length;i++)
   {
-
-    // var temp=ObjectId(jobs[i]._id).toString()
     var temp =""+jobs[i]._id
     console.log(temp)
     console.log(req.params.jobId)
@@ -111,6 +114,18 @@ router.put('/unsaveAJob/:userId/:jobId', async (req, res) =>{
   return res.json({ msg:"The job has been saved successfully"})
   
 });
+
+//Add a language
+router.put('/addANewLanguage', async (req, res) => {
+  try {
+    const languages= req.body.languages
+    const newLanguage=req.body.newLanguage
+    languages.push(newLanguage)
+    return res.json({ data: languages })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 
 //Get saved jobs of a job seeker
@@ -284,61 +299,141 @@ router.get('/checkApplied/:userId/:jobId',async (req, res) => {
 );
 
 router.put('/viewAnApplication/:jobId/:userId',async (req, res) => {
+  const userApplications = await userApplicationController.search('userId', req.params.userId);
+  console.log("Ahmed")
+  console.log(userApplications)
+  for (var i=0; i<userApplications.length;i++)
+  {
+    const applicationId=userApplications[i].applicationId
+    console.log(applicationId)
+    const application = await applicationController.search('id', applicationId);
+    console.log(application)
+    const jobId=""+application.jobId
+    const jobId1=""+req.params.jobId
+    console.log(jobId)
+    console.log(jobId===jobId1)
+    if(jobId===req.params.jobId)
+    {
+      userApplications[i].status="Viewed"
+      await userApplications[i].save()
+    }
+  }
   const jobId = req.params.jobId;
   const userId = req.params.userId;
   var job = await jobController.search("id", jobId);
-  //if (job.error) return res.status(400).json({ error: job.error });
-  //job = job[0].toJSON();
   var numberOfViewedApplications=  job.numberOfViewedApplications +1;
   job.numberOfViewedApplications = numberOfViewedApplications;
   var viewedApplicants= job.viewedApplicants;
-  viewedApplicants.push(userId);
-  job.viewedApplicants=viewedApplicants;
-  await job.save();
-  return res.json({
-    msg: "Application has been viewed successfully",
-    data: job
-  });
+  if(viewedApplicants.includes(userId)!==true)
+  {
+    viewedApplicants.push(userId);
+    job.viewedApplicants=viewedApplicants;
+    await job.save();
+    return res.json({
+      msg: "Application has been viewed successfully",
+      data: job
+    });
+  
+  }
+  else
+  {
+    return res.json({
+      msg: "Application has been viewed already"    });
+
+  }
+
 }
 );
 
  //Employer accept an applicant
  router.put('/AcceptAJobSeeker/:jobId/:userId',async (req, res) => {
+  const userApplications = await userApplicationController.search('userId', req.params.userId);
+  for (var i=0; i<userApplications.length;i++)
+  {
+    const applicationId=userApplications[i].applicationId
+    console.log(applicationId)
+    const application = await applicationController.search('id', applicationId);
+    console.log(application)
+    const jobId=""+application.jobId
+    const jobId1=""+req.params.jobId
+    console.log(jobId)
+    console.log(jobId===jobId1)
+    if(jobId===req.params.jobId)
+    {
+      userApplications[i].status="Accepted"
+      await userApplications[i].save()
+    }
+  }
+
   const jobId = req.params.jobId;
   const userId = req.params.userId;
   var job = await jobController.search("id", jobId);
-  //if (job.error) return res.status(400).json({ error: job.error });
-  //job = job[0].toJSON();
   var numberOfAcceptedApplications=  job.numberOfAcceptedApplications +1;
   job.numberOfAcceptedApplications = numberOfAcceptedApplications;
   var acceptedApplicants= job.acceptedApplicants;
-  acceptedApplicants.push(userId);
-  job.acceptedApplicants=acceptedApplicants;
-  await job.save();
-  return res.json({
-    msg: "User has been accepted successfully",
-    data: job
-  });
+  if(acceptedApplicants.includes(userId)!==true)
+  {
+    acceptedApplicants.push(userId);
+    job.acceptedApplicants=acceptedApplicants;
+    await job.save();
+    return res.json({
+      msg: "Applicant has been accepted to the job!",
+      data: job
+    });
+  
+  }
+  else
+  {
+    return res.json({
+      msg: "You have already accepted this applicant before."    });
+
+  }
 }
 );
 
 //Employer reject an applicant
 router.put('/RejectAJobSeeker/:jobId/:userId',async (req, res) => {
+  const userApplications = await userApplicationController.search('userId', req.params.userId);
+  for (var i=0; i<userApplications.length;i++)
+  {
+    const applicationId=userApplications[i].applicationId
+    console.log(applicationId)
+    const application = await applicationController.search('id', applicationId);
+    console.log(application)
+    const jobId=""+application.jobId
+    const jobId1=""+req.params.jobId
+    console.log(jobId)
+    console.log(jobId===jobId1)
+    if(jobId===req.params.jobId)
+    {
+      userApplications[i].status="Rejected"
+      await userApplications[i].save()
+    }
+  }
+
   const jobId = req.params.jobId;
   const userId = req.params.userId;
   var job = await jobController.search("id", jobId);
-  //if (job.error) return res.status(400).json({ error: job.error });
-  //job = job[0].toJSON();
   var numberOfRejectedApplications=  job.numberOfRejectedApplications +1;
   job.numberOfRejectedApplications = numberOfRejectedApplications;
   var rejectedApplicants= job.rejectedApplicants;
-  rejectedApplicants.push(userId);
-  job.rejectedApplicants=rejectedApplicants;
-  await job.save();
-  return res.json({
-    msg: "User has been rejected ",
-    data: job
-  });
+  if(rejectedApplicants.includes(userId)!==true)
+  {
+    rejectedApplicants.push(userId);
+    job.rejectedApplicants=rejectedApplicants;
+    await job.save();
+    return res.json({
+      msg: "Applicant has been rejected.",
+      data: job
+    });
+  
+  }
+  else
+  {
+    return res.json({
+      msg: "You have rejected this applicant before."});
+
+  }
 }
 );
 

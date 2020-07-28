@@ -15,6 +15,17 @@ exports.search=async function search (att,value)
         var certainJob=await Job.findById(value)
         return certainJob
     }
+
+    if(att ==='employerId')
+    {
+    return await Job.find({employerId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
     
 }
 
@@ -35,7 +46,9 @@ exports.create=async function create(body,employerId)
       body.datePosted= date;
       body.companyName=company;
       body.employerId=employerId
-      return await Job.create(body)
+      const newJob= await Job.create(body)
+      await newJob.save()
+      return newJob
     }
     catch (error) 
     {

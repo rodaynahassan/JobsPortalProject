@@ -209,11 +209,11 @@ getAttributes = () => {
       // this.setState({datePosted:Job.datePosted.substring(0,10)})
       // // const date=this.state.datePosted.substring(0,10)
       // console.log(this.state.datePosted)
-      var languages=Job.languages
-      var languagesS=""
-      for(var j=0;j<languages.length;j++){
-        languagesS=languagesS+","+ languages[j]
-      }
+      // var languages=Job.languages
+      // var languagesS=""
+      // for(var j=0;j<languages.length;j++){
+      //   languagesS=languagesS+","+ languages[j]
+      // }
      var it=
      (
       <div>
@@ -308,7 +308,7 @@ getAttributes = () => {
      var Fashion=
      (
       <div>
-      <img src={administration} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
+      <img src={fashion} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{Job.category}&nbsp;</span>
       </div>
      );
 
@@ -407,7 +407,7 @@ getAttributes = () => {
             <br/>
             <h7 
               style={{color:"black", fontStyle:"monospace",fontSize:"1em"}}>
-                 Languages needed:&nbsp; {languagesS.substring(1)}.
+                 Languages needed:&nbsp; {Job.languages}.
             </h7> 
             <br/>
             <br/>

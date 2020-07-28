@@ -27,6 +27,18 @@ exports.search=async function search (att,value)
     });
     }
     
+    if(att ==='applicationId')
+    {
+    return await UserApplication.find({applicationId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
+
+
 }
 
 exports.create=async function create(body,userId,applicationId)

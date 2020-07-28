@@ -22,7 +22,7 @@ class Applications extends Component
             country:'',
             jobType:'',
             careerLevel:'',
-            languages:[],
+            languages:'',
             datePosted:''
         };
 }
@@ -87,12 +87,12 @@ getAttributes = () => {
   );
     let modalClose = () => this.setState({ modalShow: false });
     return this.state.appliedJobs.map((Job, index) => {
-      console.log(this.state.userApplications[index]._id)
-      var languages=Job.languages
-      var languagesS=""
-      for(var j=0;j<languages.length;j++){
-        languagesS=languagesS+","+ languages[j]
-      }
+      // console.log(this.state.userApplications[index]._id)
+      // var languages=Job.languages
+      // var languagesS=""
+      // for(var j=0;j<languages.length;j++){
+      //   languagesS=languagesS+","+ languages[j]
+      // }
 
       return (
         <div>
@@ -135,7 +135,7 @@ getAttributes = () => {
             <br/>
             <h7 
               style={{color:"black", fontStyle:"monospace",fontSize:"0.91em"}}>
-                 Languages needed:&nbsp; {languagesS.substring(1)}.
+                 Languages needed:&nbsp; {Job.languages}.
             </h7> 
             <br/>
             <br/>

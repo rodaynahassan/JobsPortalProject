@@ -50,17 +50,11 @@ class CV extends Component {
                 console.log(response.data.data[0].birthdate.substring(0,10))
 				this.setState({
                     firstName: response.data.data[0].firstName,
-                    //done
                     lastName: response.data.data[0].lastName,
-                    //done
                     email: response.data.data[0].email,
-                    //done
                     address: response.data.data[0].address,
-                    //done
                     mobileNumber: response.data.data[0].mobileNumber,
-                    //done
                     birthdate: response.data.data[0].birthdate.substring(0,10),
-                    //done
                     cv: response.data.data[0]._id,
                     type: response.data.data[0].type,
                     school: response.data.data[0].school,

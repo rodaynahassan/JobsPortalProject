@@ -18,6 +18,10 @@ import ChangeEmail from './components/pages/ChangeEmail.js'
 import ChangePassword from './components/pages/ChangePassword.js'
 import EditCV from './components/pages/EditCV.js'
 import CV from './components/pages/CV.js'
+import CreateANewJob from './components/pages/CreateANewJob.js'
+import CheckboxExampleToggle from './components/pages/CheckboxExampleToggle.js'
+import ChooseAnApplication from './components/pages/ChooseAnApplication';
+import Questions from './components/pages/Questions.js';
 
 // import add from './components/pages/EditCV.js'
 
@@ -25,6 +29,32 @@ import NewNavBar from './components/layout/NewNavBar.js';
 import SideBar from './components/layout/SideBar.js';
 
 import './App.css'
+import EmployerJobs from './components/pages/EmployerJobs';
+import EmployerJobDetails from './components/pages/EmployerJobDetails';
+import ViewUserApplication from './components/pages/ViewUserApplication';
+import ViewPersonalInfo from './components/pages/ViewPersonalInfo';
+import ViewCv from './components/pages/ViewCv';
+import Applicants from './components/pages/Applicants';
+import SideBarEmployerApplicant from './components/layout/SideBarEmployerApplicant';
+import SideBarEmployer from './components/layout/SideBarEmployer';
+
+import AdminAllJobs from './components/pages/AdminAllJobs';
+import AdminApplicants from './components/pages/AdminApplicants';
+import AdminViewUserApplication from './components/pages/AdminViewUserApplication';
+import AdminViewPersonalInfo from './components/pages/AdminViewPersonalInfo';
+import AdminViewCv from './components/pages/AdminViewCV';
+import SideBarAdminApplicant from './components/layout/SideBarAdminApplicant';
+import SideBarAdmin from './components/layout/SideBarAdmin';
+import AdminJobDetails from './components/pages/AdminJobDetails';
+import GetAllJobSeekers from './components/pages/GetAllJobSeekers';
+import GetAllEmployers from './components/pages/GetAllEmployers';
+import EmployerPersonalInfo from './components/pages/EmployerPersonalInfo';
+import EmployerCompany from './components/pages/EmployerCompany';
+import AdminInfo from './components/pages/AdminInfo';
+import AdminChangeEmail from './components/pages/AdminChangeEmail';
+import AdminChangePassword from './components/pages/AdminChangePassword';
+import EmployerChangeEmail from './components/pages/EmployerChangeEmail';
+import EmployerChangePassword from './components/pages/EmployerChangePassword';
 
 class App extends Component {
   constructor() {
@@ -35,7 +65,8 @@ class App extends Component {
   state={
     filters:localStorage.getItem('filters'),
     filters1:localStorage.getItem('filters1'),
-    jobId:{}
+    jobId:{},
+    languages:[]
   }
   
   setFilters=(filters)=>
@@ -50,6 +81,10 @@ class App extends Component {
 
   setJobId=(jobId)=>{
     this.setState({jobId:jobId})
+  };
+
+  setLanguages=(languages)=>{
+    this.setState({languages:languages})
   };
   render() {
     var currentLocation = window.location.pathname;
@@ -80,8 +115,64 @@ class App extends Component {
 
                 <Route
                   exact
-                  path="/"
-                  render={props => <Homepage {...props} />}
+                  path="/trial"
+                  render={props => <CheckboxExampleToggle {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/newjob"
+                  render={props => <CreateANewJob {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/questions"
+                  render={props => <Questions {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/postedjobs"
+                  render={props => <EmployerJobs {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/details"
+                  render={props => <EmployerJobDetails {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/applicants"
+                  render={props => <Applicants {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/viewapplication"
+                  render={props => <ViewUserApplication {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/viewprofile"
+                  render={props => <ViewPersonalInfo {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/viewcv"
+                  render={props => <ViewCv {...props} />}
+                />
+
+
+
+                <Route
+                  exact
+                  path="/choosetype"
+                  render={props => <ChooseAnApplication {...props} />}
                 />
 
                 <Route
@@ -160,14 +251,114 @@ class App extends Component {
                   path="/editcv"
                   render={props => <EditCV {...props} />}
                 />
+
+                <Route
+                  exact
+                  path="/adminjobs"
+                  render={props => <AdminAllJobs {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminapplicants"
+                  render={props => <AdminApplicants {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminviewapplication"
+                  render={props => <AdminViewUserApplication {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminviewprofile"
+                  render={props => <AdminViewPersonalInfo {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminviewcv"
+                  render={props => <AdminViewCv {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminjobdetails"
+                  render={props => <AdminJobDetails {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/jobseekers"
+                  render={props => <GetAllJobSeekers {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/employers"
+                  render={props => <GetAllEmployers {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/employerinfo"
+                  render={props => <EmployerPersonalInfo {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/employercompany"
+                  render={props => <EmployerCompany {...props} />}
+                />
+
+                  <Route
+                  exact
+                  path="/admininfo"
+                  render={props => <AdminInfo {...props} />}
+                />
+
+              <Route
+                  exact
+                  path="/adminchangeemail"
+                  render={props => <AdminChangeEmail {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/adminchangepassword"
+                  render={props => <AdminChangePassword {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/employerchangepassword"
+                  render={props => <EmployerChangePassword {...props} />}
+                />
+
+                <Route
+                  exact
+                  path="/employerchangeemail"
+                  render={props => <EmployerChangeEmail {...props} />}
+                />
+
+
+
+
+
             </Switch>
             </div>
                  {/* {currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv' || currentLocation==='/cv' ?<SideBar />:null } */}
-                  {currentLocation==='/'?null:currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv'||currentLocation==='/cv' ?<SideBar /> :null}    
-                  {/* <NewNavBar/> */}
-                  {currentLocation==='/'||currentLocation==='/user'?null:<NewNavBar/>}
+                  {/* {currentLocation==='/'?null:currentLocation==='/personalinfo' || currentLocation==='/changeemail' || currentLocation==='/changepassword' ||currentLocation==='/editcv'||currentLocation==='/cv' ?<SideBar /> :null}     */}
+                  <NewNavBar/>
+                  {/* {currentLocation==='/'||currentLocation==='/user'?null:<NewNavBar/>} */}
+                  {currentLocation==='/viewcv'||currentLocation==='/viewprofile'|| currentLocation==='/viewapplication'?<SideBarEmployerApplicant/>:null}
+                  {currentLocation==='/adminviewcv'||currentLocation==='/adminviewprofile'|| currentLocation==='/adminviewapplication'?<SideBarAdminApplicant/>:null}
+                  {currentLocation==='/employerchangeemail'||currentLocation==='/employerchangepassword'|| currentLocation==='/employerinfo'?<SideBarEmployer/>:null}
+                  {currentLocation==='/adminchangeemail'||currentLocation==='/adminchangepassword'|| currentLocation==='/admininfo'?<SideBarAdmin/>:null}
 
-                  {/* <SideBar/> */} 
+                  {/* <SideBar/> */}
+                  {/* <SideBarEmployer/>  */}
           </Router>
           </div>
 						</Provider>

@@ -35,7 +35,7 @@ class JobDetails extends Component
             jobType:"",
             careerLevel:"",
             salary:"",
-            languages:[],
+            languages:'',
             vacancies:"",
             jobDescription:"",
             jobRequirements:"",
@@ -50,6 +50,7 @@ class JobDetails extends Component
             datePosted:"",
             job:"",
             newLanguages:"",
+            applicationDeadline:'',
             modalShow: false
         };
 }
@@ -58,7 +59,7 @@ componentDidMount()
     {
         axios.get('/routes/api/jobs/getByID/'+localStorage.getItem('jobId'))
                 .then((response) => {
-                    console.log(response.data.data)
+                    console.log(response.data.data.applicationDeadline)
                     this.setState({
                       job:response.data.data,
                       jobTitle:response.data.data.jobTitle,
@@ -80,7 +81,8 @@ componentDidMount()
                       numberOfRejectedApplications:response.data.data.numberOfRejectedApplications,
                       startDate:response.data.data.startDate,
                       duration:response.data.data.duration,
-                      datePosted:response.data.data.datePosted
+                      datePosted:response.data.data.datePosted,
+                      applicationDeadline: response.data.data.applicationDeadline
                     });
                 });
   }
@@ -168,6 +170,23 @@ redirectSave(jobId) {
 }
 
 getAttributes = () => {
+  var jobReq=
+  (
+      <div>
+        <u
+          style={{color:"black",fontWeight:"bold", fontStyle:"italic"}}>
+             Job Requirements:
+        </u> 
+        <br/>
+
+        <p
+          style={{color:"black",fontFamily:"monospace",fontSize:"1em"}}>
+            {this.state.jobRequirements}
+        </p>
+
+      </div>
+  );
+
     var Experience=(
       <div>
           <u
@@ -321,13 +340,59 @@ getAttributes = () => {
       <img src={business} width="70" heigth="60" style={{ color: "#3388FF"}} alt="" /><span style={{color:blue200, fontStyle:"italic",fontSize:"1.25em", fontFamily:"monospace",backgroundColor:"black"}}>&nbsp;{this.state.category}&nbsp;</span>
       </div>
      );
-    var newL=this.state.languages
-    console.log(newL)
-    var languagesS=""
-    for(var j=0;j<newL.length;j++){
-      languagesS=languagesS+", "+ newL[j]
-    }
 
+     var Duration =
+     (
+        <div>
+        <u
+            style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+               Duration:
+          </u> 
+          <h9
+            style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+               &nbsp;{this.state.duration}.
+          </h9>
+
+          <br/>
+
+        </div>
+     );
+
+     var StartDate=
+     (
+         <div>
+         <u
+             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+                Start Date:
+           </u> 
+           <h9
+             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+                &nbsp;{this.state.startDate.substring(0,10)}.
+           </h9> 
+ 
+           <br/>
+     
+         </div>
+     );
+
+     var ApplicationDeadline=
+     (
+         <div>
+         <u
+             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
+               Application Deadline:
+           </u> 
+           <h9
+             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
+                &nbsp;{this.state.applicationDeadline.substring(0,10)}.
+           </h9> 
+ 
+           <br/>
+     
+         </div>
+     );
+ 
+ 
     return (
       <div>
       <br/>
@@ -336,7 +401,7 @@ getAttributes = () => {
       <Card 
       style={{
           width:"50%",
-          height:"850px",
+          height:"100%",
           paddingLeft:"10px",
           backgroundColor:'rgba(0,0,0,0.030)',
           marginLeft:"150px"
@@ -383,7 +448,7 @@ getAttributes = () => {
           <br/>
           <h7 
             style={{color:"black", fontStyle:"monospace",fontSize:"1em"}}>
-               Languages needed:&nbsp; {languagesS.substring(1)}.
+               Languages needed:&nbsp; {this.state.languages}.
           </h7> 
           <br/>
           <br/>
@@ -405,24 +470,13 @@ getAttributes = () => {
             style={{color:"black",fontFamily:"monospace",fontSize:"1em"}}>
               {this.state.jobDescription}
           </p>
-          <br/>
-          <br/>
 
-          <u
-            style={{color:"black",fontWeight:"bold", fontStyle:"italic"}}>
-               Job Requirements:
-          </u> 
-          <br/>
-
-          <p
-            style={{color:"black",fontFamily:"monospace",fontSize:"1em"}}>
-              {this.state.jobRequirements}
-          </p>
-
-          <br/>
+          {this.state.jobRequirements==='Not needed'?null:jobReq}
           ________________________________________________________________________________________________
 
           <br/>
+          {this.state.startDate==="Not needed"?null:StartDate}          
+          {this.state.duration==='Not needed'?null: Duration}
 
           <u
             style={{color:"black", fontWeight:"bold",fontStyle:"italic",fontSize:"0.8em"}}>
@@ -464,7 +518,9 @@ getAttributes = () => {
             style={{color:"grey", fontStyle:"monospace",fontSize:"0.75em"}}>
                &nbsp;{this.state.vacancies}.
           </h9> 
-          {this.state.experienceNeeded!=='No'? Experience:null}
+          {this.state.experienceNeeded!=='Not needed'? Experience:null}
+          {this.state.applicationDeadline==="Not needed"? null:ApplicationDeadline}
+
           <div 
         class="panel panel-default" 
         style=
