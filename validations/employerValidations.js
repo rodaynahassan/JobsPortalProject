@@ -3,12 +3,13 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = { 
+            userType:Joi.string(),
             firstName: Joi.string().required().max(50),
             middleName: Joi.string().max(50),
             lastName: Joi.string().required().max(50),
             jobRoles: Joi.array().required(),
             mobileNumber: Joi.string().required().max(50),
-            businessEmail: Joi.string().required().email().max(20),
+            businessEmail: Joi.string().required().email(),
             password: Joi.string().min(8).required().max(50),
             companyName:Joi.string().required().max(50),
             companyNumber:Joi.string().required().max(50),
@@ -22,12 +23,13 @@ module.exports = {
 
     updateValidation: request => {
         const updateSchema = {
+            userType:Joi.string(),
             firstName: Joi.string().max(50),
             middleName: Joi.string().max(50),
             lastName: Joi.string().max(50),
             jobRoles: Joi.array(),
             mobileNumber: Joi.string().max(50),
-            businessEmail: Joi.string().email().max(20),
+            businessEmail: Joi.string().email(),
             password: Joi.string().min(8).max(50),
             companyName:Joi.string().max(50),
             companyNumber:Joi.string().max(50),

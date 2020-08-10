@@ -3,8 +3,8 @@ const Joi = require('joi')
 module.exports = {
     createValidation: request => {
         const createSchema = { 
-            userID: Joi.string().required(),
-            applicationID: Joi.string().required(),
+            userId: Joi.string(),
+            applicationId: Joi.string(),
             answerOne: Joi.string(),
             answerTwo: Joi.string(),
             answerThree: Joi.string(),
@@ -15,6 +15,7 @@ module.exports = {
             answerEight: Joi.string(),
             answerNine: Joi.string(),
             answerTen: Joi.string(),
+            status: Joi.string()
         }
 
         return Joi.validate(request, createSchema)
@@ -22,8 +23,8 @@ module.exports = {
 
     updateValidation: request => {
         const updateSchema = {
-            userID: Joi.string(),
-            applicationID: Joi.string(),
+            userId: Joi.string(),
+            applicationId: Joi.string(),
             answerOne: Joi.string(),
             answerTwo: Joi.string(),
             answerThree: Joi.string(),
@@ -34,6 +35,7 @@ module.exports = {
             answerEight: Joi.string(),
             answerNine: Joi.string(),
             answerTen: Joi.string(),
+            status: Joi.string()
         }
 
         return Joi.validate(request, updateSchema)

@@ -1,28 +1,55 @@
 const mongoose = require('mongoose');
 const UserApplication = require('../models/userApplication');
 const userApplicationValidator = require('../validations/userApplicationValidations')
+const Application = require('../models/application');
+const Job = require('../models/job');
 
 exports.search=async function search (att,value)
 {
     if (!att)
     {
         var userApplications=await UserApplication.find()
-        return jobs
+        return userApplications
     }
     if (att==='id')
     {
         var certainUserApplication=await UserApplication.findById(value)
         return certainUserApplication
     }
+    if(att ==='userId')
+    {
+    return await UserApplication.find({userId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
     
+    if(att ==='applicationId')
+    {
+    return await UserApplication.find({applicationId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
+
+
 }
 
-exports.create=async function create(body)
+exports.create=async function create(body,userId,applicationId)
 {
     try
     {
       const isUserApplicationValidated=userApplicationValidator.createValidation(body)
       if (isUserApplicationValidated.error) return {error:isUserApplicationValidated.error.details[0].message}
+      body.status="Applied"
+      body.userId=userId
+      body.applicationId=applicationId
       const newUserApplication=await UserApplication.create(body)
       await newUserApplication.save();
       return newUserApplication
@@ -72,7 +99,7 @@ exports.remove = async function remove(att,value)
         return userApplication
     }
     else{
-        const  userApplications = await Job.deleteMany({ att: value })
+        const  userApplications = await UserApplication.deleteMany({ att: value })
         return userApplications
     }
 }

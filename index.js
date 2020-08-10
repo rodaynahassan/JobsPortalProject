@@ -6,6 +6,10 @@ const jobs = require('./routes/api/jobs')
 const applications = require('./routes/api/applications')
 const userApplications = require('./routes/api/userApplications')
 const cvs = require('./routes/api/cvs')
+const careerAdvisors = require('./routes/api/careerAdvisors')
+const categories = require('./routes/api/categories')
+const countries = require('./routes/api/countries');
+const admins = require('./routes/api/admins');
 
 const app = express()
 
@@ -28,6 +32,10 @@ app.use('/routes/api/jobs', jobs)
 app.use('/routes/api/applications', applications)
 app.use('/routes/api/userApplications', userApplications)
 app.use('/routes/api/cvs', cvs)
+app.use('/routes/api/careerAdvisors', careerAdvisors)
+app.use('/routes/api/categories', categories)
+app.use('/routes/api/countries', countries)
+app.use('/routes/api/admins', admins)
 
 
 app.use(function(req, res, next) {
@@ -52,5 +60,5 @@ app.use((req, res) => {
   res.status(404).send({ err: 'We can not find what you are looking for' })
 })
 
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 5000
 app.listen(port, () => console.log(`Server up and running on port ${port}`))

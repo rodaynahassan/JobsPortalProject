@@ -2,6 +2,10 @@ const express = require('express');
 const router = express.Router();
 const UserApplication = require('../../models/userApplication');
 const userApplicationController= require('../../controllers/userApplicationController');
+const Application = require('../../models/application');
+const applicationController= require('../../controllers/applicationController');
+const Job = require('../../models/job');
+const jobController= require('../../controllers/jobController');
 
 // get all user applications
 router.get('/getAllUserApplications', async (req,res) => {
@@ -15,9 +19,32 @@ router.get('/getByID/:id', async (req, res) =>{
     return res.json({ data: userApplication })
 }); 
 
+// get jobs that a certain user applied to userapplication by userID
+router.get('/getByuserID/:userId', async (req, res) =>{
+  const userApplications = await userApplicationController.search('userId', req.params.userId);
+  return res.json({ data: userApplications })
+});
+
+// get jobs that a certain user applied to userapplication by userID
+router.get('/getByJobId/:jobId', async (req, res) =>{
+  const application = await applicationController.search('jobId', req.params.jobId);
+  console.log(application)
+  var applicationId =""+application[0]._id
+  const userApplications = await userApplicationController.search('applicationId', applicationId);
+  return res.json({ data: userApplications })
+});
+
+// get an application
+router.get('/getApplication/:id', async (req, res) =>{
+  const userApplication = await userApplicationController.search('id', req.params.id);
+  const applicationId= userApplication.applicationId
+  const application = await applicationController.search('id', applicationId);
+  return res.json({ userApplication: userApplication , application:application})
+}); 
+
 //Create New User Application
-router.post('/CreateANewUserApplication', async (req, res) => {
-  const newUserApplication = await userApplication.create(req.body);
+router.post('/CreateANewUserApplication/:userId/:applicationId', async (req, res) => {
+  const newUserApplication = await userApplicationController.create(req.body,req.params.userId,req.params.applicationId);
   return res.json({ data: newUserApplication });
 });
 
@@ -32,7 +59,7 @@ router.put('/updateAUserApplication/:id', async (req, res) => {
   })
 
  //Delete A User Application
- router.delete('deleteAUserApplication/:id', async (req,res) => {
+ router.delete('/deleteAUserApplication/:id', async (req,res) => {
     try {
      const id = req.params.id
      const deletedUserApplication = await userApplicationController.remove('id', req.params.id)

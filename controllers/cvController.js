@@ -15,6 +15,11 @@ exports.search=async function search (att,value)
         var certainCv=await Cv.findById(value)
         return certainCv
     }
+    if(att ==='jobSeekerId')
+    {
+    var returnedCv= await Cv.find({jobSeekerId:value})
+    return returnedCv
+    }
     
 }
 
@@ -25,14 +30,6 @@ exports.create=async function create(body)
       const isCvValidated=cvValidator.createValidation(body)
       if (isCvValidated.error) return {error:isCvValidated.error.details[0].message}
       const newCv=await Cv.create(body)
-      await newCv.save();
-      const jobSeeker= await JobSeeker.findById(newCv.jobSeekerId)
-      newCv.firstName=jobSeeker.firstName;
-      newCv.lastName=jobSeeker.lastName;
-      newCv.address=jobSeeker.address + "-" + jobSeeker.city + "-" + jobSeeker.address;
-      newCv.mobileNumber=jobSeeker.mobileNumber;
-      newCv.email=jobSeeker.email;
-      newCv.birthdate=jobSeeker.birthdate;
       await newCv.save();
       return newCv
     }

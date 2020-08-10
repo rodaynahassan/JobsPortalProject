@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const JobSeeker = require('../models/jobSeeker');
 const jobSeekerValidator = require('../validations/jobSeekerValidations')
+const Cv = require('../models/cv');
+const cvValidator = require('../validations/cvValidations')
+const cvController= require('../controllers/cvController');
+
 
 exports.search=async function search (att,value)
 {
@@ -45,10 +49,19 @@ exports.update = async function update(att,value,body)
         var isValidated = jobSeekerValidator.updateValidation(body)
         if(isValidated.error) return {error: isValidated.error.details[0].message}
         var updatedJobSeeker = await JobSeeker.findByIdAndUpdate(value,body)
+        await updatedJobSeeker.save()
         .then(res=>{return res})
         .catch(error=>{
            return {error:error}
        })
+       
+      
+            // const cv = await cvController.search('jobSeekerId', updatedJobSeeker._id);
+            // console.log(cv)
+            // console.log(updatedJobSeeker.address)
+            // cv.address=updatedJobSeeker.address + "-" + updatedJobSeeker.city + "-" + updatedJobSeeker.country+ ".";
+            // await cv.save()
+        
        if (updatedJobSeeker.error) return updatedJobSeeker
         var returnedJobSeeker = await JobSeeker.findById(value)
         return returnedJobSeeker

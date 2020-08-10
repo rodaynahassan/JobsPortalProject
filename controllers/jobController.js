@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Job = require('../models/job');
 const jobValidator = require('../validations/jobValidations')
+const Employer = require('../models/employer');
 
 exports.search=async function search (att,value)
 {
@@ -14,21 +15,39 @@ exports.search=async function search (att,value)
         var certainJob=await Job.findById(value)
         return certainJob
     }
+
+    if(att ==='employerId')
+    {
+    return await Job.find({employerId:value})
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      return { error: err };
+    });
+    }
     
 }
 
-exports.create=async function create(body)
+exports.create=async function create(body,employerId)
 {
     try
     {
+
+      const employer= await Employer.findById(employerId)
+      const company=employer.companyName
       const isJobValidated=jobValidator.createValidation(body)
       if (isJobValidated.error) return {error:isJobValidated.error.details[0].message}
-      const newJob=await Job.create(body)
-      newJob.totalNumberOfApplicants=0;
-      newJob.numberOfViewedApplications=0;
-      newJob.numberOfAcceptedApplications=0;
-      newJob.numberOfRejectedApplications=0;
-      await newJob.save();
+      body.totalNumberOfApplicants=0;
+      body.numberOfViewedApplications=0;
+      body.numberOfAcceptedApplications=0;
+      body.numberOfRejectedApplications=0;
+      const date=new Date();
+      body.datePosted= date;
+      body.companyName=company;
+      body.employerId=employerId
+      const newJob= await Job.create(body)
+      await newJob.save()
       return newJob
     }
     catch (error) 
